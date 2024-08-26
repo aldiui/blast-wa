@@ -31,27 +31,4 @@ class PengaturanPage extends Page implements HasForms
 
     protected static ?string $title = 'Pengaturan';
 
-    // Tambahkan method untuk mendefinisikan form
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('nama')
-                    ->label('Nama Sekolah')
-                    ->required(),
-
-            ]);
-    }
-
-    // Method untuk handling form submission
-    public function submit()
-    {
-        $this->validate('');
-
-        $pengaturan = Pengaturan::create($this->form->getState());
-
-        session()->flash('message', 'Pengaturan berhasil disimpan.');
-
-        return redirect()->route('filament.pages.pengaturan-page');
-    }
 }

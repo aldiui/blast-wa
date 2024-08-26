@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('alamat');
             $table->string('email', 100);
             $table->string('no_telepon', 100);
+            $table->unsignedBigInteger('syahriyah')->default('250000');
+            $table->unsignedBigInteger('uang_makan')->default('50000');
+            $table->unsignedBigInteger('field_trip')->default('25000');
+            $table->unsignedBigInteger('daftar_ulang')->default('1454000');
             $table->timestamps();
         });
     }
