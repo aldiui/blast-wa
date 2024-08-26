@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('tabungans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_siswa');
-            $table->enum('jenis_tabungan',['tabungan_wajib','tabungan_reguler'])->default('');
-            $table->BigInteger('saldo');
+            $table->enum('jenis_tabungan', ['Tabungan Wajib', 'Tabungan Reguler']);
+            $table->bigInteger('saldo');
             $table->timestamps();
+
+            $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
         });
     }
 

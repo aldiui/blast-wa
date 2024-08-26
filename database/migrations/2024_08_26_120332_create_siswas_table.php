@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kelas');
-            $table->string('nis',50)->unique();
-            $table->string('nama',100);
-            $table->string('orang_tua',100);
-            $table->string('no_telepon',15);
+            $table->string('nis')->unique();
+            $table->string('nama');
+            $table->string('orang_tua');
+            $table->string('no_telepon');
             $table->text('alamat');
             $table->timestamps();
 

@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger('field_trip');
             $table->enum('status', ['0', '1'])->default('0');
             $table->timestamps();
+
+            $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
         });
     }
 

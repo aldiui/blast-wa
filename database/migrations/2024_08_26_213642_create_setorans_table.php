@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('setorans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_tabungan');
-            $table->enum('transaksi',['pemasukan','pengeluaran']);
+            $table->enum('transaksi', ['pemasukan', 'pengeluaran']);
             $table->timestamps();
+
+            $table->foreign('id_tabungan')->references('id')->on('tabungans')->onDelete('cascade');
         });
     }
 

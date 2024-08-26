@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('logo');
             $table->string('alamat');
-            $table->string('email', 100);
-            $table->string('no_telepon', 100);
+            $table->string('email');
+            $table->string('no_telepon');
             $table->unsignedBigInteger('syahriyah')->default('250000');
             $table->unsignedBigInteger('uang_makan')->default('50000');
             $table->unsignedBigInteger('field_trip')->default('25000');
