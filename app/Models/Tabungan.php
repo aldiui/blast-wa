@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Setoran;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tabungan extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function setorans()
+    {
+        return $this->hasMany(Setoran::class);
+    }
 }

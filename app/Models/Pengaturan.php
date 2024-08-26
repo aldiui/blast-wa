@@ -11,4 +11,6 @@ class Pengaturan extends Model
 
     protected $guarded = [];
 
+
+
 }

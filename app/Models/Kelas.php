@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Iuran;
 use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,5 +16,10 @@ class Kelas extends Model
     public function siswas()
     {
         return $this->hasMany(Siswa::class);
+    }
+
+    public function iurans()
+    {
+        return $this->hasMany(Iuran::class);
     }
 }

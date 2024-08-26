@@ -31,4 +31,6 @@ class PengaturanPage extends Page implements HasForms
 
     protected static ?string $title = 'Pengaturan';
 
+    
+
 }

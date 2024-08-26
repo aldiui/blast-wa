@@ -2,10 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Kelas;
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Iuran extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class,'id_siswa');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class,'id_kelas');
+    }
 }
