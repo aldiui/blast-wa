@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Models\Pengumuman;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class PengumumanController extends Controller
 {
     public function index(Request $request)
     {
-        $pengumuman = Pengumuman::search($request->search)->paginate($request->perPage ?? 25)->appends('query',null)->withQueryString();
+        $pengumuman = Pengumuman::search($request->search)->paginate($request->perPage ?? 25)->appends('query', null)->withQueryString();
         return Inertia::render('Admin/Pengumuman/Index', compact('pengumuman'));
     }
 
@@ -27,6 +27,7 @@ class PengumumanController extends Controller
             'deskripsi' => 'required|min:10',
             'tanggal' => 'required',
         ]);
+
         Pengumuman::create($request->only('judul', 'deskripsi', 'tanggal'));
         return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
     }
@@ -44,6 +45,7 @@ class PengumumanController extends Controller
             'deskripsi' => 'required|min:10',
             'tanggal' => 'required',
         ]);
+
         $pengumuman = Pengumuman::findOrFail($id);
         $pengumuman->update($request->only('judul', 'deskripsi', 'tanggal'));
         return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');

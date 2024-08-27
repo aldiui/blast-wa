@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class KelasController extends Controller
 {
     public function index(Request $request)
     {
-        $kelas = Kelas::search($request->search)->paginate($request->perPage ?? 25)->appends('query',null)->withQueryString();
+        $kelas = Kelas::search($request->search)->paginate($request->perPage ?? 25)->appends('query', null)->withQueryString();
         return Inertia::render('Admin/Kelas/Index', compact('kelas'));
     }
 
@@ -25,6 +25,7 @@ class KelasController extends Controller
         $request->validate([
             'nama' => 'required|min:3|max:255',
         ]);
+
         Kelas::create($request->only('nama'));
         return redirect()->route('admin.kelas.index')->with('success', 'Kelas baru ditambahkan.');
     }
@@ -40,6 +41,7 @@ class KelasController extends Controller
         $request->validate([
             'nama' => 'required|min:3|max:255',
         ]);
+
         $kelas = Kelas::findOrFail($id);
         $kelas->update($request->only('nama'));
         return redirect()->route('admin.kelas.index')->with('success', 'Kelas baru ditambahkan.');

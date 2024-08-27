@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use App\Models\Pengaturan;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class PengaturanController extends Controller
 {
@@ -24,9 +24,10 @@ class PengaturanController extends Controller
                 'field_trip' => 'required|numeric',
                 'daftar_ulang' => 'required|numeric',
             ]);
+
             $pengaturan->update($request->only('nama', 'logo', 'email', 'no_telepon', 'alamat', 'syahriyah', 'uang_makan', 'field_trip', 'daftar_ulang'));
             return redirect()->route('admin.pengaturan.index')->with('success', 'Pengaturan baru ditambahkan.');
-        }  
-        return Inertia::render('Admin/Pengaturan/Index',compact('pengaturan'));
+        }
+        return Inertia::render('Admin/Pengaturan/Index', compact('pengaturan'));
     }
 }

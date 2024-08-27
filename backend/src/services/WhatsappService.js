@@ -2,6 +2,7 @@ import { makeWASocket, useMultiFileAuthState } from '@whiskeysockets/baileys';
 import qrCode from 'qrcode-terminal';
 import NumberHelper from '../helpers/NumberHelper.js';
 import queue from '../config/QueueConfig.js';
+import { errorResponse } from '../helpers/ResponseHelper.js';
 
 let sock;
 
@@ -61,26 +62,13 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const sendBulkMessage = async (bulk) => {
     try {
-        const chunkSize = 10;
-        const delayMs = 5000;
-
-        const chunks = [];
-        for (let i = 0; i < bulk.length; i += chunkSize) {
-            chunks.push(bulk.slice(i, i + chunkSize));
-        }
-
-        for (const chunk of chunks) {
-            for (const { number, message } of chunk) {
-                await queue.add(async () => {
-                    await sendMessage(number, message);
-                });
-            }
-
-            await delay(delayMs);
+        for (const { number, message } of bulk) {
+            await sendMessage(number, message);
         }
 
         return true;
     } catch (error) {
+        console.log(error);
         return errorResponse(res, 500, 'Internal Server Error', error);
     }
 };
