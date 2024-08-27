@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login()
             ->spa()
+            ->maxContentWidth('full')
+            ->brandLogo(fn () => view('filament.logo'))
             ->colors([
                 'primary' => Color::Green,
             ])

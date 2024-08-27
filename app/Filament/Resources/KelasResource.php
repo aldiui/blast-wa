@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KelasResource\Pages;
-use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\Kelas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class KelasResource extends Resource
 {
@@ -59,7 +56,8 @@ class KelasResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->paginated([50, 100, 'all']);
     }
 
     public static function getRelations(): array
