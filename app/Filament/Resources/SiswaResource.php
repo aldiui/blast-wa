@@ -7,12 +7,16 @@ use Filament\Tables;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Forms\Form;
+use Actions\CreateAction;
 use Filament\Tables\Table;
+use App\Imports\SiswaImport;
+use Maatwebsite\Excel\Excel;
+use App\Imports\MyClientImport;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
+use YOS\FilamentExcel\Actions\Import;
+use Filament\Tables\Enums\FiltersLayout;
+use EightyNine\ExcelImport\ExcelImportAction;
 use App\Filament\Resources\SiswaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SiswaResource\RelationManagers;
 
 class SiswaResource extends Resource
 {
@@ -32,32 +36,34 @@ class SiswaResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('id_kelas')
-                    ->label('Kelas')
-                    ->options(Kelas::all()->pluck('nama', 'id'))
-                    ->searchable()
-                    ->required(),
-                Forms\Components\TextInput::make('nis')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('nama')
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('orang_tua')
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('no_telepon')
-                    ->tel()
-                    ->required()
-                    ->maxLength(15),
-                Forms\Components\Textarea::make('alamat')
-                    ->required()
-                    ->columnSpanFull(),
+                Forms\Components\Card::make('Data Siswa')
+                    ->schema([
+                        Forms\Components\Select::make('id_kelas')
+                            ->label('Kelas')
+                            ->options(Kelas::all()->pluck('nama', 'id'))
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\TextInput::make('nis')
+                            ->required()
+                            ->maxLength(50),
+                        Forms\Components\TextInput::make('nama')
+                            ->required()
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('orang_tua')
+                            ->required()
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('no_telepon')
+                            ->tel()
+                            ->required()
+                            ->maxLength(15),
+                        Forms\Components\Textarea::make('alamat')
+                            ->required()
+                            ->columnSpanFull(),
+                    ])->columns(2),
             ]);
     }
 
@@ -79,8 +85,11 @@ class SiswaResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('id_kelas')
+                    ->label('Kelas')
+                    ->options(Kelas::all()->pluck('nama', 'id'))
+                    ->searchable(),
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -107,4 +116,16 @@ class SiswaResource extends Resource
             'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
     }
+ 
+    protected function getHeaderActions(): array
+    {
+        return [
+            \EightyNine\ExcelImport\ExcelImportAction::make()
+                ->slideOver()
+                ->color("primary")
+                ->use(SiswaImport::class),
+            Actions\CreateAction::make(),
+        ];
+    }
+
 }
