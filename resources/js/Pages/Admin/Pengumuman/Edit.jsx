@@ -117,4 +117,4 @@ const EditPengumuman = ({ auth, sessions, pengumuman }) => {
   );
 };
 
-export default EditKelas;
+export default EditPengumuman;

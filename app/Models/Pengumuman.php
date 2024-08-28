@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Laravel\Scout\Searchable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Pengumuman extends Model
 {
@@ -19,8 +19,8 @@ class Pengumuman extends Model
             'id' => (int) $this->id,
             'judul' => $this->judul,
             'deskripsi' => $this->deskripsi,
-            'tanggal' => $this->tanggal
+            'tanggal' => $this->tanggal,
         ];
     }
-    
+
 }
