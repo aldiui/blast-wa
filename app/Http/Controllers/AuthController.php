@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
@@ -34,6 +34,6 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return back()->with('success', 'Logout Berhasil');
+        return redirect()->route('login')->with('success', 'Logout Berhasil');
     }
 }

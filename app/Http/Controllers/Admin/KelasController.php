@@ -11,7 +11,11 @@ class KelasController extends Controller
 {
     public function index(Request $request)
     {
-        $kelas = Kelas::search($request->search)->paginate($request->perPage ?? 25)->appends('query', null)->withQueryString();
+        $kelas = Kelas::search($request->search)
+            ->orderBy('id', 'asc')
+            ->paginate($request->perPage ?? 25)
+            ->appends('query', null)
+            ->withQueryString();
         return Inertia::render('Admin/Kelas/Index', compact('kelas'));
     }
 
@@ -27,7 +31,7 @@ class KelasController extends Controller
         ]);
 
         Kelas::create($request->only('nama'));
-        return redirect()->route('admin.kelas.index')->with('success', 'Kelas baru ditambahkan.');
+        return redirect()->route('kelas.index')->with('success', 'Kelas baru ditambahkan.');
     }
 
     public function edit($id)
@@ -44,13 +48,13 @@ class KelasController extends Controller
 
         $kelas = Kelas::findOrFail($id);
         $kelas->update($request->only('nama'));
-        return redirect()->route('admin.kelas.index')->with('success', 'Kelas baru ditambahkan.');
+        return redirect()->route('kelas.index')->with('success', 'Kelas baru ditambahkan.');
     }
 
     public function destroy($id)
     {
         $kelas = Kelas::findOrFail($id);
         $kelas->delete();
-        return redirect()->route('admin.kelas.index')->with('success', 'Kelas baru ditambahkan.');
+        return redirect()->route('kelas.index')->with('success', 'Kelas baru ditambahkan.');
     }
 }

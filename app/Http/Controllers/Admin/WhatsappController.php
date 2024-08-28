@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendBulkMessageJob;
 use App\Services\WhatsappService;
 
 class WhatsappController extends Controller
 {
     public function index(WhatsappService $whatsappService)
     {
-        $bulk = [
+        $bulkMessages = [
             [
                 "number" => "087826753532",
                 "message" => "Halo Aldi",
@@ -19,7 +20,8 @@ class WhatsappController extends Controller
                 "message" => "Halo Ari",
             ],
         ];
-        $whatsapp = $whatsappService->sendBulkMessage(compact('bulk'));
+
+        dispatch(new SendBulkMessageJob($bulkMessages))->onQueue('bulk-messages');
         return $whatsapp;
         // return Inertia::render('Admin/Whatsapp/Index');
     }
