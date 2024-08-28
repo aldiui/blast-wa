@@ -4,17 +4,18 @@ import { body, validationResult } from 'express-validator';
 
 export const generateQRCode = async (req, res) => {
     try {
-        console.log('spontan uhuy');
+        console.log('Log : generateQRCode');
         const qrcode = await getQRCode();
-        return res.send(`<pre>${qrcode}</pre>`);
+        return successResponse(res, 200, 'success', qrcode);
     } catch (error) {
+        console.log(error);
         return errorResponse(res, 500, 'Internal Server Error', error);
     }
 };
 
 export const sendNewMessage = async (req, res) => {
     try {
-        console.log(req.body);
+        console.log('Log : sendNewMessage');
         const { number, message } = req.body;
 
         await Promise.all(
@@ -36,13 +37,14 @@ export const sendNewMessage = async (req, res) => {
         const status = await sendMessage(number, message);
         return successResponse(res, 200, 'Message success sent', status);
     } catch (error) {
+        console.log(error);
         return errorResponse(res, 500, 'Internal Server Error', error);
     }
 };
 
 export const sendNewBulkMessage = async (req, res) => {
     try {
-        console.log('spontan uhuy cuy');
+        console.log('Log : sendNewBulkMessage');
         const { bulk } = req.body;
 
         await Promise.all([body('bulk', 'bulk is required').notEmpty()].map((validation) => validation.run(req)));

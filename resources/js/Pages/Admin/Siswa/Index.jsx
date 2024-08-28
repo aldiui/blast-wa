@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 import { pickBy } from "lodash";
 import {
@@ -26,10 +26,6 @@ const Siswa = ({ auth, sessions, siswa, kelas }) => {
     const [search, setSearch] = useState("");
     const [selectedKelas, setSelectedKelas] = useState("");
 
-    useEffect(() => {
-        getData();
-    }, [selectedKelas]);
-
     const handleChangePerPage = (e) => {
         perpage.current = parseInt(e.target.value);
         getData();
@@ -37,6 +33,7 @@ const Siswa = ({ auth, sessions, siswa, kelas }) => {
 
     const handleChangeKelas = (e) => {
         setSelectedKelas(e.target.value);
+        getData(e.target.value);
     };
 
     const handleSearch = (e) => {
@@ -44,14 +41,14 @@ const Siswa = ({ auth, sessions, siswa, kelas }) => {
         getData();
     };
 
-    const getData = () => {
+    const getData = (kelas = selectedKelas) => {
         setIsLoading(true);
         router.get(
             "/siswa",
             pickBy({
                 perpage: perpage.current,
                 search: search,
-                id_kelas: selectedKelas,
+                id_kelas : kelas
             }),
             {
                 onFinish: () => setIsLoading(false),
