@@ -24,12 +24,12 @@ class PengumumanController extends Controller
     {
         $request->validate([
             'judul' => 'required|min:10|max:255',
-            'deskripsi' => 'required|min:10',
+            'deksripsi' => 'required|min:10',
             'tanggal' => 'required',
         ]);
 
-        Pengumuman::create($request->only('judul', 'deskripsi', 'tanggal'));
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
+        Pengumuman::create($request->only('judul', 'deksripsi', 'tanggal'));
+        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
     }
 
     public function edit($id)
@@ -42,12 +42,12 @@ class PengumumanController extends Controller
     {
         $request->validate([
             'judul' => 'required|min:10|max:255',
-            'deskripsi' => 'required|min:10',
+            'deksripsi' => 'required|min:10',
             'tanggal' => 'required',
         ]);
 
         $pengumuman = Pengumuman::findOrFail($id);
-        $pengumuman->update($request->only('judul', 'deskripsi', 'tanggal'));
+        $pengumuman->update($request->only('judul', 'deksripsi', 'tanggal'));
         return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
     }
 

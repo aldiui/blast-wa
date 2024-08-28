@@ -17,6 +17,7 @@ const SidebarNav = ({ children, auth }) => {
         { name: "Dashboard", icon: HomeIcon, href: "/" },
         { name: "Kelas", icon: UserGroupIcon, href: "/kelas" },
         { name: "Siswa", icon: UserIcon, href: "/siswa" },
+        { name: "Pengumuman", icon: UserIcon, href: "/pengumuman" },
     ];
     return (
         <Box

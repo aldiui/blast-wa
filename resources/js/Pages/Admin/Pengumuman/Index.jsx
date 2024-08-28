@@ -18,8 +18,8 @@ import DataTable from "../../../Components/Datatable";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import AdminLayout from "../../../Layouts/AdminLayout ";
 
-const Kelas = ({ auth, sessions, kelas }) => {
-  const perpage = useRef(kelas.per_page);
+const Pengumuman = ({ auth, sessions, pengumuman }) => {
+  const perpage = useRef(pengumuman.per_page);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -35,14 +35,25 @@ const Kelas = ({ auth, sessions, kelas }) => {
 
   const getData = () => {
     setIsLoading(true);
-    router.get("/kelas", pickBy({ perpage: perpage.current, search: search }), {
-      onFinish: () => setIsLoading(false),
-      preserveScroll: true,
-      preserveState: true,
-    });
+    console.log("Fetching data with", {
+      perpage: perpage.current,
+      search: search,
+    }); // Debug line
+    router.get(
+      "/pengumuman",
+      pickBy({ perpage: perpage.current, search: search }),
+      {
+        onFinish: () => {
+          console.log("Data fetch complete"); // Debug line
+          setIsLoading(false);
+        },
+        preserveScroll: true,
+        preserveState: true,
+      }
+    );
   };
 
-  const calculateIndex = (index) => kelas.from + index;
+  const calculateIndex = (index) => pengumuman.from + index;
 
   const columns = [
     { header: "#", accessor: null, width: "5" },
@@ -51,13 +62,13 @@ const Kelas = ({ auth, sessions, kelas }) => {
       header: "Aksi",
       accessor: "Aksi",
       width: "10",
-      uri: "/kelas",
+      uri: "/pengumuman",
     },
   ];
 
   return (
     <AdminLayout auth={auth} sessions={sessions}>
-      <Head title="Kelas" />
+      <Head title="Pengumuman" />
       <Card p={2} w="full" h={["auto", "full"]}>
         <CardHeader
           display={"flex"}
@@ -65,11 +76,11 @@ const Kelas = ({ auth, sessions, kelas }) => {
           alignItems={"center"}
         >
           <Heading size="md" fontWeight="bold">
-            Data Kelas
+            Data Pengumuman
           </Heading>
           <Button
             as={Link}
-            href="/kelas/create"
+            href="/pengumuman/create"
             colorScheme="green"
             size={"sm"}
           >
@@ -122,7 +133,7 @@ const Kelas = ({ auth, sessions, kelas }) => {
           </Flex>
           <DataTable
             columns={columns}
-            data={kelas.data}
+            data={pengumuman.data}
             isLoading={isLoading}
             calculateIndex={calculateIndex}
           />
@@ -134,9 +145,10 @@ const Kelas = ({ auth, sessions, kelas }) => {
             mt={4}
           >
             <Text color="gray.500" fontSize="sm">
-              Showing {kelas.from ?? 0} to {kelas.to ?? 0} of {kelas.total ?? 0}
+              Showing {pengumuman.from ?? 0} to {pengumuman.to ?? 0} of{" "}
+              {pengumuman.total ?? 0}
             </Text>
-            <Pagination links={kelas.links ?? []} />
+            <Pagination links={pengumuman.links ?? []} />
           </Flex>
         </CardBody>
       </Card>
@@ -144,4 +156,4 @@ const Kelas = ({ auth, sessions, kelas }) => {
   );
 };
 
-export default Kelas;
+export default Pengumuman;

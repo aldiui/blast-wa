@@ -14,9 +14,9 @@ return [
     | Supported: "algolia", "meilisearch", "typesense",
     |            "database", "collection", "null"
     |
-    */
+     */
 
-    'driver' => env('SCOUT_DRIVER', 'algolia'),
+    'driver' => env('SCOUT_DRIVER', 'null'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ return [
     | names used by Scout. This prefix may be useful if you have multiple
     | "tenants" or applications sharing the same search infrastructure.
     |
-    */
+     */
 
     'prefix' => env('SCOUT_PREFIX', ''),
 
@@ -40,7 +40,7 @@ return [
     | with your search engines are queued. When this is set to "true" then
     | all automatic data syncing will get queued for better performance.
     |
-    */
+     */
 
     'queue' => env('SCOUT_QUEUE', false),
 
@@ -53,7 +53,7 @@ return [
     | with your search indexes after every open database transaction has
     | been committed, thus preventing any discarded data from syncing.
     |
-    */
+     */
 
     'after_commit' => false,
 
@@ -66,7 +66,7 @@ return [
     | mass importing data into the search engine. This allows you to fine
     | tune each of these chunk sizes based on the power of the servers.
     |
-    */
+     */
 
     'chunk' => [
         'searchable' => 500,
@@ -82,7 +82,7 @@ return [
     | the search indexes. Maintaining soft deleted records can be useful
     | if your application still needs to search for the records later.
     |
-    */
+     */
 
     'soft_delete' => false,
 
@@ -97,7 +97,7 @@ return [
     |
     | Supported engines: "algolia"
     |
-    */
+     */
 
     'identify' => env('SCOUT_IDENTIFY', false),
 
@@ -110,7 +110,7 @@ return [
     | search engine which works great with Scout out of the box. Just plug
     | in your application ID and admin API key to get started searching.
     |
-    */
+     */
 
     'algolia' => [
         'id' => env('ALGOLIA_APP_ID', ''),
@@ -128,7 +128,7 @@ return [
     |
     | See: https://www.meilisearch.com/docs/learn/configuration/instance_options#all-instance-options
     |
-    */
+     */
 
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
@@ -149,7 +149,7 @@ return [
     | source search engine using minimal configuration. Below, you will
     | state the host, key, and schema configuration for the instance.
     |
-    */
+     */
 
     'typesense' => [
         'client-settings' => [
