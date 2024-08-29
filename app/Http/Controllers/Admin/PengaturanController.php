@@ -12,10 +12,10 @@ class PengaturanController extends Controller
     public function index(Request $request)
     {
         $pengaturan = Pengaturan::findOrFail(1);
-        if ($request->method() == 'POST') {
+        if ($request->method() == 'PUT') {
             $request->validate([
                 'nama' => 'required|min:3|max:255',
-                'logo' => 'nullable|mimes:png,jpg,jpeg|max:2048',
+                // 'logo' => 'nullable|mimes:png,jpg,jpeg|max:2048',
                 'email' => 'required|email|max:255',
                 'no_telepon' => 'required|min:10|max:13',
                 'alamat' => 'required|min:3|max:255',
@@ -25,8 +25,8 @@ class PengaturanController extends Controller
                 'daftar_ulang' => 'required|numeric',
             ]);
 
-            $pengaturan->update($request->only('nama', 'logo', 'email', 'no_telepon', 'alamat', 'syahriyah', 'uang_makan', 'field_trip', 'daftar_ulang'));
-            return redirect()->route('admin.pengaturan.index')->with('success', 'Pengaturan baru ditambahkan.');
+            $pengaturan->update($request->only('nama', 'email', 'no_telepon', 'alamat', 'syahriyah', 'uang_makan', 'field_trip', 'daftar_ulang'));
+            return redirect()->route('pengaturan')->with('success', 'Pengaturan baru ditambahkan.');
         }
         return Inertia::render('Admin/Pengaturan/Index', compact('pengaturan'));
     }

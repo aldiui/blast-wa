@@ -38,7 +38,7 @@ const DeleteButton = ({ uri }) => {
                 colorScheme="red"
                 variant="solid"
                 isLoading={isDeleting}
-                loadingText="Deleting"
+                loadingText="Hapus"
                 size="sm"
             >
                 <Icon as={TrashIcon} mr={2} />
@@ -51,7 +51,7 @@ const DeleteButton = ({ uri }) => {
                     <ModalHeader>Konfirmasi Penghapusan</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        Apakah Anda yakin ingin menghapus item ini?
+                        Apakah Anda yakin ingin menghapus data ini?
                     </ModalBody>
 
                     <ModalFooter textAlign={"center"}>
