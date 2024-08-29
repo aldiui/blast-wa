@@ -11,7 +11,6 @@ import {
   FormLabel,
   Heading,
   Icon,
-  Image,
   Input,
   Text,
 } from "@chakra-ui/react";

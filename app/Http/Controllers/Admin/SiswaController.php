@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\SiswaImport;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -75,6 +76,17 @@ class SiswaController extends Controller
         $siswa = Siswa::findOrFail($id);
         $siswa->delete();
         return redirect()->route('siswa.index')->with('success', 'Siswa baru ditambahkan.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'excel' => 'required|file|mimes:xlsx,xls',
+        ]);
+        Excel::import(new SiswaImport(), request()->file('excel'));
+
+        return redirect()->route('siswa.index')->with('success', 'Siswa baru ditambahkan.');
+
     }
 
 }
