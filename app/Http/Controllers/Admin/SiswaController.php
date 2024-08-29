@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -81,12 +82,11 @@ class SiswaController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'excel' => 'required|file|mimes:xlsx,xls',
+            'file' => 'required|file|mimes:xlsx,xls',
         ]);
-        Excel::import(new SiswaImport(), request()->file('excel'));
+        Excel::import(new SiswaImport(), request()->file('file'));
 
         return redirect()->route('siswa.index')->with('success', 'Siswa baru ditambahkan.');
-
     }
 
 }

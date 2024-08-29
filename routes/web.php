@@ -15,6 +15,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/', DashboardController::class)->names('dashboard');
+    Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
     Route::resource('/siswa', SiswaController::class)->names('siswa');
     Route::resource('/kelas', KelasController::class)->names('kelas');
     Route::resource('/pengumuman', PengumumanController::class)->names('pengumuman');
