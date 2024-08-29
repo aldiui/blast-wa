@@ -77,4 +77,6 @@ class SiswaController extends Controller
         return redirect()->route('siswa.index')->with('success', 'Siswa baru ditambahkan.');
     }
 
+    public function import(Request $request)
+
 }

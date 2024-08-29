@@ -19,7 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/kelas', KelasController::class)->names('kelas');
     Route::resource('/pengumuman', PengumumanController::class)->names('pengumuman');
     Route::get('/logout', [AuthController::class, 'logout']);
-    Route::match(['get', 'post'], '/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
+    Route::match(['get', 'put'], '/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
     Route::match(['get', 'post'], '/whatsapp', [WhatsappController::class, 'index'])->name('whatsapp');
 
 });
