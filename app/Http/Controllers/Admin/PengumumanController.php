@@ -48,14 +48,14 @@ class PengumumanController extends Controller
 
         $pengumuman = Pengumuman::findOrFail($id);
         $pengumuman->update($request->only('judul', 'deksripsi', 'tanggal'));
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
+        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
     }
 
     public function destroy($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
         $pengumuman->delete();
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
+        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman baru ditambahkan.');
     }
 
 }

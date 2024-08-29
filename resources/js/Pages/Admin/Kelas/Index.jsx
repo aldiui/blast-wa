@@ -16,7 +16,7 @@ import {
 import Pagination from "../../../Components/Pagination";
 import DataTable from "../../../Components/Datatable";
 import { PlusIcon } from "@heroicons/react/16/solid";
-import AdminLayout from "../../../Layouts/AdminLayout ";
+import AdminLayout from "../../../Layouts/AdminLayout";
 
 const Kelas = ({ auth, sessions, kelas }) => {
   const perpage = useRef(kelas.per_page);

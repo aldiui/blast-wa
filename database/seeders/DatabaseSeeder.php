@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Kelas;
+use App\Models\Pengaturan;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -41,5 +42,13 @@ class DatabaseSeeder extends Seeder
         ];
 
         Kelas::insert($kelasData);
+
+        Pengaturan::create([
+            'nama' => 'MI Condong',
+            'logo' => 'logo.png',
+            'email' => 'micondong@gmail.com',
+            'no_telepon' => '085710000000',
+            'alamat' => 'CirebonKomplek Pesantren Condong 46196 Tasikmalaya Jawa Barat',
+        ]);
     }
 }

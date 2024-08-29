@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, BookmarkIcon } from "@heroicons/react/16/solid";
-import AdminLayout from "../../../Layouts/AdminLayout ";
+import AdminLayout from "../../../Layouts/AdminLayout";
 
 const EditKelas = ({ auth, sessions, kelas }) => {
   const { data, setData, put, processing, errors } = useForm({

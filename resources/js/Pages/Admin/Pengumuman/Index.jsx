@@ -16,15 +16,14 @@ import {
 import Pagination from "../../../Components/Pagination";
 import DataTable from "../../../Components/Datatable";
 import { PlusIcon } from "@heroicons/react/16/solid";
-import AdminLayout from "../../../Layouts/AdminLayout ";
+import AdminLayout from "../../../Layouts/AdminLayout";
 
 const Pengumuman = ({ auth, sessions, pengumuman }) => {
-  const perpage = useRef(pengumuman.per_page);
+  const [perpage, setPerpage] = useState(pengumuman.per_page);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
-
   const handleChangePerPage = (e) => {
-    perpage.current = parseInt(e.target.value);
+    setPerpage(parseInt(e.target.value));
     getData();
   };
 
@@ -39,25 +38,21 @@ const Pengumuman = ({ auth, sessions, pengumuman }) => {
       perpage: perpage.current,
       search: search,
     }); // Debug line
-    router.get(
-      "/pengumuman",
-      pickBy({ perpage: perpage.current, search: search }),
-      {
-        onFinish: () => {
-          console.log("Data fetch complete"); // Debug line
-          setIsLoading(false);
-        },
-        preserveScroll: true,
-        preserveState: true,
-      }
-    );
+    router.get("/pengumuman", pickBy({ perpage: perpage, search: search }), {
+      onFinish: () => {
+        setIsLoading(false);
+      },
+      preserveScroll: true,
+      preserveState: true,
+    });
   };
 
   const calculateIndex = (index) => pengumuman.from + index;
 
   const columns = [
     { header: "#", accessor: null, width: "5" },
-    { header: "Nama", accessor: "nama" },
+    { header: "Tanggal", accessor: "tanggal" },
+    { header: "Judul", accessor: "judul" },
     {
       header: "Aksi",
       accessor: "Aksi",
@@ -98,7 +93,6 @@ const Pengumuman = ({ auth, sessions, pengumuman }) => {
             <Select
               id="perpage"
               size={"sm"}
-              name="perpage"
               width="auto"
               value={perpage.current}
               onChange={handleChangePerPage}

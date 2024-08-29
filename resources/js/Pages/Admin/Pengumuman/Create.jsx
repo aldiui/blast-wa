@@ -14,9 +14,10 @@ import {
   Image,
   Input,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import { ArrowLeftIcon, BookmarkIcon } from "@heroicons/react/16/solid";
-import AdminLayout from "../../../Layouts/AdminLayout ";
+import AdminLayout from "../../../Layouts/AdminLayout";
 
 const CreatePengumuman = ({ auth, sessions }) => {
   const { data, setData, post, processing, errors } = useForm({
@@ -60,17 +61,16 @@ const CreatePengumuman = ({ auth, sessions }) => {
             </FormControl>
             <FormControl mb={3} isInvalid={errors.deksripsi}>
               <FormLabel htmlFor="deksripsi" fontSize={"sm"}>
-                Deskripsi
+                Deksripsi
                 <Text display={"inline"} color="red">
                   *
                 </Text>
               </FormLabel>
-              <Input
-                type="text"
+              <Textarea
                 id="deksripsi"
                 value={data.deksripsi}
                 onChange={(e) => setData("deksripsi", e.target.value)}
-              />
+              ></Textarea>
               {errors.deksripsi && (
                 <FormErrorMessage fontSize={"xs"}>
                   {errors.deksripsi}
@@ -85,7 +85,7 @@ const CreatePengumuman = ({ auth, sessions }) => {
                 </Text>
               </FormLabel>
               <Input
-                type="date"
+                type="datetime-local"
                 id="tanggal"
                 value={data.tanggal}
                 onChange={(e) => setData("tanggal", e.target.value)}

@@ -30,4 +30,5 @@ class PengaturanController extends Controller
         }
         return Inertia::render('Admin/Pengaturan/Index', compact('pengaturan'));
     }
+
 }
