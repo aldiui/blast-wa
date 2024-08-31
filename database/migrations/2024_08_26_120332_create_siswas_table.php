@@ -14,15 +14,16 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('id_kelas');
+            $table->unsignedBigInteger('kelas_id');
             $table->string('nis')->unique();
             $table->string('nama');
             $table->string('orang_tua');
             $table->string('no_telepon');
             $table->text('alamat');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
         });
     }
 

@@ -15,7 +15,7 @@ class CreateTabungan extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $cekTabungan = Tabungan::where([
-            'id_siswa' => $data['id_siswa'],
+            'siswa_id' => $data['siswa_id'],
             'jenis_tabungan' => $data['jenis_tabungan'],
         ])->first();
 
@@ -29,7 +29,7 @@ class CreateTabungan extends CreateRecord
         }
 
         $tabungan = Tabungan::create([
-            'id_siswa' => $data['id_siswa'],
+            'siswa_id' => $data['siswa_id'],
             'jenis_tabungan' => $data['jenis_tabungan'],
             'saldo' => $data['saldo'],
         ]);

@@ -67,7 +67,7 @@ class SetoransRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->label('Setoran')
                     ->after(function ($record, $data): void {
-                        $tabungan = Tabungan::find($record->id_tabungan);
+                        $tabungan = Tabungan::find($record->tabungan_id);
                         if ($record->transaksi == 'Pemasukan') {
                             $tabungan->update([
                                 'saldo' => $tabungan->saldo + $data['nominal'],
@@ -83,7 +83,7 @@ class SetoransRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->before(function ($record, $data): void {
-                        $tabungan = Tabungan::find($record->id_tabungan);
+                        $tabungan = Tabungan::find($record->tabungan_id);
                         if ($record->transaksi == 'Pemasukan' && $data['transaksi'] == 'Pemasukan') {
                             $tabungan->update([
                                 'saldo' => $tabungan->saldo - $record->nominal + $data['nominal'],
@@ -105,7 +105,7 @@ class SetoransRelationManager extends RelationManager
                     ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->tabungan->uuid . '/edit'),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record): void {
-                        $tabungan = Tabungan::find($record->id_tabungan);
+                        $tabungan = Tabungan::find($record->tabungan_id);
                         if ($record->transaksi == 'Pemasukan') {
                             $tabungan->update([
                                 'saldo' => $tabungan->saldo - $record->nominal,
@@ -123,6 +123,6 @@ class SetoransRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->paginated([25, 50, 100, 'all']);
+            ->paginated([50, 100, 'all']);
     }
 }

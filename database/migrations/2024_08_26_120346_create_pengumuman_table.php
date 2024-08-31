@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('deksripsi');
             $table->dateTime('tanggal');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

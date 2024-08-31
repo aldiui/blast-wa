@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('setorans', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('id_tabungan');
+            $table->unsignedBigInteger('tabungan_id');
             $table->enum('transaksi', ['Pemasukan', 'Pengeluaran']);
             $table->bigInteger('nominal');
+            $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('id_tabungan')->references('id')->on('tabungans')->onDelete('cascade');
+            $table->foreign('tabungan_id')->references('id')->on('tabungans')->onDelete('cascade');
         });
     }
 

@@ -24,7 +24,7 @@ class SiswaResource extends Resource
 
     protected static ?string $slug = 'siswa';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function getGloballySearchableAttributes(): array
     {
@@ -36,7 +36,7 @@ class SiswaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\Select::make('id_kelas')
+                    Forms\Components\Select::make('kelas_id')
                         ->label('Kelas')
                         ->options(Kelas::all()->pluck('nama', 'id'))
                         ->searchable(),
@@ -54,7 +54,7 @@ class SiswaResource extends Resource
                         ->tel()
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\Textarea::make('alamat')
+                    Forms\Components\TextArea::make('alamat')
                         ->required()
                         ->columnSpanFull(),
                 ])->columns(2),
@@ -78,21 +78,26 @@ class SiswaResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('id_kelas')
+                Tables\Filters\SelectFilter::make('kelas_id')
                     ->label('Kelas')
                     ->options(Kelas::all()->pluck('nama', 'id'))
                     ->searchable(),
+                Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
-            ])
-            ->paginated([25, 50, 100, 'all']);
+                ])
+                ->paginated([50, 100, 'all']);
 
     }
 

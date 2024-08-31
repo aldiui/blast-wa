@@ -29,8 +29,28 @@ if (!function_exists('formatRupiah')) {
 }
 
 if (!function_exists('getPengaturan')) {
+
     function getPengaturan()
     {
         return Pengaturan::first();
+    }
+}
+
+if (!function_exists('cekTahunAjaran')) {
+    function cekTahunAjaran($tanggal = null)
+    {
+        $date = Carbon::parse($tanggal ?? Carbon::now());
+        $year = $date->year;
+        $academicYearStart = Carbon::create($year, 7, 1);
+
+        if ($date->greaterThanOrEqualTo($academicYearStart)) {
+            $startYear = $year;
+            $endYear = $year + 1;
+        } else {
+            $startYear = $year - 1;
+            $endYear = $year;
+        }
+
+        return "$startYear/$endYear";
     }
 }

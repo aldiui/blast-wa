@@ -29,7 +29,7 @@ class EditTabungan extends EditRecord
     {
         if ($record->jenis_tabungan !== $data['jenis_tabungan']) {
             $cekTabungan = Tabungan::where([
-                'id_siswa' => $data['id_siswa'],
+                'siswa_id' => $data['siswa_id'],
                 'jenis_tabungan' => $data['jenis_tabungan'],
             ])->first();
 
@@ -45,7 +45,7 @@ class EditTabungan extends EditRecord
 
         $saldoLama = $record->saldo;
         $record->update([
-            'id_siswa' => $data['id_siswa'],
+            'siswa_id' => $data['siswa_id'],
             'jenis_tabungan' => $data['jenis_tabungan'],
             'saldo' => $data['saldo'],
         ]);

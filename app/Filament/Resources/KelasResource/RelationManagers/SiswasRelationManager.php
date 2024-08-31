@@ -29,6 +29,6 @@ class SiswasRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->paginated([25, 50, 100, 'all']);
+            ->paginated([50, 100, 'all']);
     }
 }

@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('tabungans', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('id_siswa');
+            $table->unsignedBigInteger('siswa_id');
             $table->enum('jenis_tabungan', ['Tabungan Wajib', 'Tabungan Reguler']);
             $table->bigInteger('saldo');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
         });
     }
 

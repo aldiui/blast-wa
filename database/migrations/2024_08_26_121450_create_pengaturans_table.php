@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('field_trip')->default('25000');
             $table->unsignedBigInteger('daftar_ulang')->default('1454000');
             $table->timestamps();
+
         });
     }
 

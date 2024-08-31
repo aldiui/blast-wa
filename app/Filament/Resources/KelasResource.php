@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Filters\TrashedFilter;
 
 class KelasResource extends Resource
 {
@@ -32,7 +33,6 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->visible('create')
                     ->schema([
                         Forms\Components\TextInput::make('nama')
                             ->required()
@@ -49,18 +49,23 @@ class KelasResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
             ])
-            ->paginated([25, 50, 100, 'all']);
+            ->paginated([50, 100, 'all']);
+
     }
 
     public static function getRelations(): array
@@ -75,7 +80,6 @@ class KelasResource extends Resource
         return [
             'index' => Pages\ListKelas::route('/'),
             'edit' => Pages\EditKelas::route('/{record}/edit'),
-
         ];
     }
 }

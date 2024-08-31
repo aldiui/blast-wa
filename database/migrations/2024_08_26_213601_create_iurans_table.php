@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('iurans', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('id_kelas');
-            $table->unsignedBigInteger('id_siswa');
+            $table->unsignedBigInteger('kelas_id');
+            $table->unsignedBigInteger('siswa_id');
+            $table->string('bulan');
             $table->string('tahun_ajaran');
             $table->date('tanggal');
             $table->unsignedBigInteger('syahriyah');
@@ -23,9 +24,10 @@ return new class extends Migration
             $table->unsignedBigInteger('field_trip');
             $table->enum('status', ['0', '1'])->default('0');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
-            $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
         });
     }
 

@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class TabunganResource extends Resource
@@ -34,7 +35,7 @@ class TabunganResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\Select::make('id_siswa')
+                    Forms\Components\Select::make('siswa_id')
                         ->label('Siswa')
                         ->options(Siswa::all()->pluck('nama', 'id'))
                         ->searchable(),
@@ -75,21 +76,28 @@ class TabunganResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('id_siswa')
+                Tables\Filters\SelectFilter::make('siswa_id')
                     ->label('Siswa')
                     ->options(Siswa::all()->pluck('nama', 'id'))
                     ->searchable(),
+                TrashedFilter::make(),
+
             ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
+            ])
+            ->paginated([50, 100, 'all']);
 
-            ])->paginated([25, 50, 100, 'all']);
     }
 
     public static function getRelations(): array

@@ -4,30 +4,31 @@ namespace App\Models;
 
 use App\Models\Iuran;
 use App\Models\Kelas;
-use App\Models\Tabungan;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
+use App\Models\Tabungan;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Siswa extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class);
     }
 
     public function tabungans()
     {
-        return $this->hasMany(Tabungan::class, 'id_siswa');
+        return $this->hasMany(Tabungan::class);
     }
 
     public function iurans()
     {
-        return $this->hasMany(Iuran::class, 'id_siswa');
+        return $this->hasMany(Iuran::class);
     }
 
     public static function boot()

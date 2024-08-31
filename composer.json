@@ -7,10 +7,13 @@
     "require": {
         "php": "^8.2",
         "ariaieboy/filament-currency": "^1.8",
+        "bezhansalleh/filament-shield": "^3.2",
+        "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
