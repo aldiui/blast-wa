@@ -41,7 +41,11 @@ class DatabaseSeeder extends Seeder
             ["nama" => "6 C"],
         ];
 
-        Kelas::insert($kelasData);
+        foreach ($kelasData as $data) {
+            Kelas::create([
+                'nama' => $data['nama']
+            ]);
+        }
 
         Pengaturan::create([
             'nama' => 'MI Condong',

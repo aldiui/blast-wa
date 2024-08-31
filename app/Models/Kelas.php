@@ -6,6 +6,7 @@ use App\Models\Iuran;
 use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class Kelas extends Model
 {
@@ -21,6 +22,20 @@ class Kelas extends Model
     public function iurans()
     {
         return $this->hasMany(Iuran::class, 'id_kelas');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->uuid = Uuid::uuid4()->toString();
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
     }
 
 }

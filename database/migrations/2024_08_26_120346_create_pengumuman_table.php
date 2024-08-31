@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengumuman', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('judul');
             $table->text('deksripsi');
             $table->dateTime('tanggal');

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tabungans', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('id_siswa');
             $table->enum('jenis_tabungan', ['Tabungan Wajib', 'Tabungan Reguler']);
             $table->bigInteger('saldo');

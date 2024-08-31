@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('setorans', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('id_tabungan');
             $table->enum('transaksi', ['Pemasukan', 'Pengeluaran']);
             $table->bigInteger('nominal');

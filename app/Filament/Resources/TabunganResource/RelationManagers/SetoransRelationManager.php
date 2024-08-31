@@ -77,7 +77,7 @@ class SetoransRelationManager extends RelationManager
                             ]);
                         }
                     })
-                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->id_tabungan . '/edit'),
+                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->tabungan->uuid . '/edit'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
@@ -101,7 +101,7 @@ class SetoransRelationManager extends RelationManager
                             ]);
                         }
                     })
-                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->id_tabungan . '/edit'),
+                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->tabungan->uuid . '/edit'),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record): void {
                         $tabungan = Tabungan::find($record->id_tabungan);
@@ -115,7 +115,7 @@ class SetoransRelationManager extends RelationManager
                             ]);
                         }
                     })
-                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->id_tabungan . '/edit'),
+                    ->successRedirectUrl(fn(Model $record): string => '/tabungan/' . $record->tabungan->uuid . '/edit'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

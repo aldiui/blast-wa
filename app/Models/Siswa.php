@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Tabungan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 class Siswa extends Model
 {
@@ -28,4 +29,19 @@ class Siswa extends Model
     {
         return $this->hasMany(Iuran::class, 'id_siswa');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->uuid = Uuid::uuid4()->toString();
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('iurans', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('id_kelas');
             $table->unsignedBigInteger('id_siswa');
             $table->string('tahun_ajaran');
