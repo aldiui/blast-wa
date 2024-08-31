@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TabunganResource\Pages;
 use App\Filament\Resources\TabunganResource\RelationManagers;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Tabungan;
 use Filament\Forms;
@@ -17,7 +18,7 @@ class TabunganResource extends Resource
 {
     protected static ?string $model = Tabungan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?string $recordTitleAttribute = 'nama';
 
@@ -50,8 +51,7 @@ class TabunganResource extends Resource
                         ->prefix('Rp')
                         ->required()
                         ->default(0)
-                        ->visible('create')
-                        ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2),
+                        ->visible('create'),
                 ])->columns(2),
             ]);
     }
@@ -63,9 +63,15 @@ class TabunganResource extends Resource
                 Tables\Columns\TextColumn::make('siswa.nama')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('siswa.kelas.nama')
+                    ->label('Kelas')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_tabungan'),
                 Tables\Columns\TextColumn::make('saldo')
-                    ->currency('IDR')
+                    ->formatStateUsing(function ($state) {
+                        return formatRupiah($state);
+                    })
                     ->sortable(),
             ])
             ->filters([

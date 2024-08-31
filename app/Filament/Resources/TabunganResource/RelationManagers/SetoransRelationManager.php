@@ -21,7 +21,6 @@ class SetoransRelationManager extends RelationManager
                 Forms\Components\TextInput::make('nominal')
                     ->prefix('Rp')
                     ->required()
-                    ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                     ->maxLength(255),
                 Forms\Components\Select::make('transaksi')
                     ->required()
@@ -58,7 +57,9 @@ class SetoransRelationManager extends RelationManager
                     })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nominal')
-                    ->currency('IDR')
+                    ->formatStateUsing(function ($state) {
+                        return formatRupiah($state);
+                    })
                     ->searchable(),
             ])
             ->headerActions([
