@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TabunganResource\Pages;
 use App\Filament\Resources\TabunganResource\RelationManagers;
-use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Tabungan;
 use Filament\Forms;
