@@ -49,6 +49,7 @@ class TabunganResource extends Resource
                     Forms\Components\TextInput::make('saldo')
                         ->prefix('Rp')
                         ->required()
+                        ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                         ->default(0)
                         ->visible('create'),
                 ])->columns(2),

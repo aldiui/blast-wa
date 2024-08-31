@@ -21,6 +21,7 @@ class SetoransRelationManager extends RelationManager
                 Forms\Components\TextInput::make('nominal')
                     ->prefix('Rp')
                     ->required()
+                    ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                     ->maxLength(255),
                 Forms\Components\Select::make('transaksi')
                     ->required()

@@ -76,21 +76,25 @@ class EditPengaturan extends Page implements HasForms
                             ->required(),
                         Forms\Components\TextInput::make('syahriyah')
                             ->label('Syahriyah')
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                             ->prefix('Rp')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('uang_makan')
                             ->label('Uang Makan')
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                             ->prefix('Rp')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('field_trip')
                             ->label('Field Trip')
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                             ->prefix('Rp')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('daftar_ulang')
                             ->label('Daftar Ulang')
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                             ->prefix('Rp')
                             ->required()
                             ->maxLength(255),
