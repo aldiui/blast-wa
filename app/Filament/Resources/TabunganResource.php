@@ -2,17 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Siswa;
-use App\Models\Tabungan;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Tables\Enums\FiltersLayout;
 use App\Filament\Resources\TabunganResource\Pages;
 use App\Filament\Resources\TabunganResource\RelationManagers;
-
+use App\Models\Siswa;
+use App\Models\Tabungan;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
 
 class TabunganResource extends Resource
 {
@@ -35,25 +34,26 @@ class TabunganResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                Forms\Components\Select::make('id_siswa')
-                    ->label('Siswa')
-                    ->options(Siswa::all()->pluck('nama', 'id'))
-                    ->searchable(),
-                Forms\Components\Select::make('jenis_tabungan')
-                    ->label('Jenis Tabungan')
-                    ->required()
-                    ->options([
-                        'Tabungan Wajib' => 'Tabungan Wajib',
-                        'Tabungan Reguler' => 'Tabungan Reguler',
-                    ])
-                    ->searchable(),
-                Forms\Components\TextInput::make('saldo')
-                    ->required()
-                    ->default(0)
-                    ->visible('create')
-                    ->currencyMask(thousandSeparator: ',',decimalSeparator: '.',precision: 2)
-            ])->columns(2),
-        ]);
+                    Forms\Components\Select::make('id_siswa')
+                        ->label('Siswa')
+                        ->options(Siswa::all()->pluck('nama', 'id'))
+                        ->searchable(),
+                    Forms\Components\Select::make('jenis_tabungan')
+                        ->label('Jenis Tabungan')
+                        ->required()
+                        ->options([
+                            'Tabungan Wajib' => 'Tabungan Wajib',
+                            'Tabungan Reguler' => 'Tabungan Reguler',
+                        ])
+                        ->searchable(),
+                    Forms\Components\TextInput::make('saldo')
+                        ->prefix('Rp')
+                        ->required()
+                        ->default(0)
+                        ->visible('create')
+                        ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2),
+                ])->columns(2),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -65,7 +65,7 @@ class TabunganResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_tabungan'),
                 Tables\Columns\TextColumn::make('saldo')
-                ->currency('IDR')
+                    ->currency('IDR')
                     ->sortable(),
             ])
             ->filters([
@@ -82,7 +82,7 @@ class TabunganResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-                
+
             ])->paginated([25, 50, 100, 'all']);
     }
 

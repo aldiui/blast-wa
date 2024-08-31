@@ -29,10 +29,13 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->spa()
             ->globalSearch()
+            ->maxContentWidth('full')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->colors([
                 'primary' => Color::Green,
             ])
+            ->brandLogo(fn () => view('filament.logo'))
+            ->favicon(getPengaturan()->logo)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -40,8 +43,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\FilamentInfoWidget::class,
-                Widgets\AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -53,6 +54,11 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->navigationGroups([
+                'Data Master',
+                'Data Transaksi',
+                'Pengaturan',
             ])
             ->authMiddleware([
                 Authenticate::class,

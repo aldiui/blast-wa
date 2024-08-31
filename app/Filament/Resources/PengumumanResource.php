@@ -23,7 +23,7 @@ class PengumumanResource extends Resource
     protected static ?string $navigationGroup = 'Data Master';
 
     protected static ?string $slug = 'pengumuman';
-    
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Iuran;
 use App\Models\Siswa;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Kelas extends Model
 {
@@ -13,12 +13,14 @@ class Kelas extends Model
 
     protected $guarded = [];
 
-    public function siswas(){
+    public function siswas()
+    {
         return $this->hasMany(Siswa::class, 'id_kelas');
     }
 
-    public function iurans(){
-        return $this->hasMany(Iuran::class);
+    public function iurans()
+    {
+        return $this->hasMany(Iuran::class, 'id_kelas');
     }
 
 }
