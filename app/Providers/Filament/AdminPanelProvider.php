@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login()
             ->spa()
+            ->profile()
             ->globalSearch()
             ->maxContentWidth('full')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
@@ -39,10 +40,10 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(getPengaturan()->logo)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 CountingOverview::class,
             ])
@@ -67,7 +68,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
-                
             ]);
     }
 }

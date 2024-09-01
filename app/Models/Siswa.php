@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Models\Iuran;
 use App\Models\Kelas;
-use Ramsey\Uuid\Uuid;
 use App\Models\Tabungan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
 
 class Siswa extends Model
 {

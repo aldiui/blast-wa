@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Siswa;
-use Ramsey\Uuid\Uuid;
 use App\Models\Setoran;
+use App\Models\Siswa;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
 
 class Tabungan extends Model
 {

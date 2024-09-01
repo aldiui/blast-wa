@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\SiswaResource\Pages;
 
-use Filament\Actions;
-use App\Imports\SiswaImport;
 use App\Filament\Resources\SiswaResource;
+use App\Imports\SiswaImport;
+use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSiswas extends ListRecords
@@ -15,7 +15,7 @@ class ListSiswas extends ListRecords
     {
         return [
             \EightyNine\ExcelImport\ExcelImportAction::make()
-            ->label('Upload Excel')
+                ->label('Upload Excel')
                 ->slideOver()
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color("warning")

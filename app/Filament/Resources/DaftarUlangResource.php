@@ -2,18 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\DaftarUlangResource\Pages;
+use App\Models\DaftarUlang;
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\DaftarUlang;
-use Filament\Resources\Resource;
+use Filament\Forms;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Filters\TrashedFilter;
-use App\Filament\Resources\DaftarUlangResource\Pages;
+use Filament\Tables\Table;
 
 class DaftarUlangResource extends Resource
 {
@@ -31,46 +30,46 @@ class DaftarUlangResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\Card::make()->schema([
-                Forms\Components\Select::make('siswa_id')
-                    ->label('Siswa')
-                    ->required()
-                    ->options(Siswa::all()->pluck('nama', 'id'))
-                    ->searchable()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, $set) {
-                        $set('kelas_id', $state ? Siswa::find($state)->kelas_id : null);
-                    }),
-                Forms\Components\Select::make('kelas_id')
-                    ->label('Kelas')
-                    ->required()
-                    ->options(Kelas::all()->pluck('nama', 'id'))
-                    ->searchable(),
-                Forms\Components\TextInput::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->required()
-                    ->default(cekTahunAjaran())
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->required(),
-                Forms\Components\TextInput::make('biaya')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
-                    ->prefix('Rp')
-                    ->default(getPengaturan()->daftar_ulang),
-                Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->options([
-                        '1' => 'Lunas',
-                        '0' => 'Belum Lunas',
-                    ])
-                    ->default(0)
-                    ->required(),
+            ->schema([
+                Forms\Components\Card::make()->schema([
+                    Forms\Components\Select::make('siswa_id')
+                        ->label('Siswa')
+                        ->required()
+                        ->options(Siswa::all()->pluck('nama', 'id'))
+                        ->searchable()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, $set) {
+                            $set('kelas_id', $state ? Siswa::find($state)->kelas_id : null);
+                        }),
+                    Forms\Components\Select::make('kelas_id')
+                        ->label('Kelas')
+                        ->required()
+                        ->options(Kelas::all()->pluck('nama', 'id'))
+                        ->searchable(),
+                    Forms\Components\TextInput::make('tahun_ajaran')
+                        ->label('Tahun Ajaran')
+                        ->required()
+                        ->default(cekTahunAjaran())
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('tanggal')
+                        ->required(),
+                    Forms\Components\TextInput::make('biaya')
+                        ->required()
+                        ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
+                        ->prefix('Rp')
+                        ->default(getPengaturan()->daftar_ulang),
+                    Forms\Components\Select::make('status')
+                        ->label('Status')
+                        ->options([
+                            '1' => 'Lunas',
+                            '0' => 'Belum Lunas',
+                        ])
+                        ->default(0)
+                        ->required(),
                     Textarea::make('keterangan')
-                    ->autosize()
-                    ])->columns(2),
-                    ]);
+                        ->autosize(),
+                ])->columns(2),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -126,7 +125,7 @@ class DaftarUlangResource extends Resource
                 ]),
             ])
             ->paginated([50, 100, 'all']);
-            
+
     }
 
     public static function getRelations(): array

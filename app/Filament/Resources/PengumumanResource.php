@@ -68,9 +68,8 @@ class PengumumanResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                 ]),
-                ])
-                ->paginated([50, 100, 'all']);
-
+            ])
+            ->paginated([50, 100, 'all']);
 
     }
 

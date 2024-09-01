@@ -29,71 +29,71 @@ class IuranResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-                Forms\Components\Card::make()
             ->schema([
-                Forms\Components\Select::make('siswa_id')
-                    ->label('Siswa')
-                    ->required()
-                    ->options(Siswa::all()->pluck('nama', 'id'))
-                    ->searchable()
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, $set) {
-                        $set('kelas_id', $state ? Siswa::find($state)->kelas_id : null);
-                    }),
-                Forms\Components\Select::make('kelas_id')
-                    ->label('Kelas')
-                    ->required()
-                    ->options(Kelas::all()->pluck('nama', 'id'))
-                    ->searchable(),
-                    Forms\Components\Select::make('bulan')
-                    ->label('Bulan')
-                    ->options([
-                        'Januari' => 'Januari',
-                        'Februari' => 'Februari',
-                        'Maret' => 'Maret',
-                        'April' => 'April',
-                        'Mei' => 'Mei',
-                        'Juni' => 'Juni',
-                        'Juli' => 'Juli',
-                        'Agustus' => 'Agustus',
-                        'September' => 'September',
-                        'Oktober' => 'Oktober',
-                        'November' => 'November',
-                        'Desember' => 'Desember',
-                    ])
-                    ->required(),
-                Forms\Components\TextInput::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->required()
-                    ->default(cekTahunAjaran())
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal')
-                    ->required()
-                    ->default(now()),
-                Forms\Components\TextInput::make('syahriyah')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
-                    ->prefix('Rp')
-                    ->default(getPengaturan()->syahriyah),
-                Forms\Components\TextInput::make('uang_makan')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
-                    ->prefix('Rp')
-                    ->default(getPengaturan()->uang_makan),
-                Forms\Components\TextInput::make('field_trip')
-                    ->required()
-                    ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
-                    ->prefix('Rp')
-                    ->default(getPengaturan()->field_trip),
-                Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->options([
-                        '1' => 'Lunas',
-                        '0' => 'Belum Lunas',
-                    ])
-                    ->default(0)
-                    ->required(),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Select::make('siswa_id')
+                            ->label('Siswa')
+                            ->required()
+                            ->options(Siswa::all()->pluck('nama', 'id'))
+                            ->searchable()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, $set) {
+                                $set('kelas_id', $state ? Siswa::find($state)->kelas_id : null);
+                            }),
+                        Forms\Components\Select::make('kelas_id')
+                            ->label('Kelas')
+                            ->required()
+                            ->options(Kelas::all()->pluck('nama', 'id'))
+                            ->searchable(),
+                        Forms\Components\Select::make('bulan')
+                            ->label('Bulan')
+                            ->options([
+                                'Januari' => 'Januari',
+                                'Februari' => 'Februari',
+                                'Maret' => 'Maret',
+                                'April' => 'April',
+                                'Mei' => 'Mei',
+                                'Juni' => 'Juni',
+                                'Juli' => 'Juli',
+                                'Agustus' => 'Agustus',
+                                'September' => 'September',
+                                'Oktober' => 'Oktober',
+                                'November' => 'November',
+                                'Desember' => 'Desember',
+                            ])
+                            ->required(),
+                        Forms\Components\TextInput::make('tahun_ajaran')
+                            ->label('Tahun Ajaran')
+                            ->required()
+                            ->default(cekTahunAjaran())
+                            ->maxLength(255),
+                        Forms\Components\DatePicker::make('tanggal')
+                            ->required()
+                            ->default(now()),
+                        Forms\Components\TextInput::make('syahriyah')
+                            ->required()
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
+                            ->prefix('Rp')
+                            ->default(getPengaturan()->syahriyah),
+                        Forms\Components\TextInput::make('uang_makan')
+                            ->required()
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
+                            ->prefix('Rp')
+                            ->default(getPengaturan()->uang_makan),
+                        Forms\Components\TextInput::make('field_trip')
+                            ->required()
+                            ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
+                            ->prefix('Rp')
+                            ->default(getPengaturan()->field_trip),
+                        Forms\Components\Select::make('status')
+                            ->label('Status')
+                            ->options([
+                                '1' => 'Lunas',
+                                '0' => 'Belum Lunas',
+                            ])
+                            ->default(0)
+                            ->required(),
                     ])->columns(2),
             ]);
     }
@@ -124,7 +124,7 @@ class IuranResource extends Resource
                         '1' => 'success',
                         '0' => 'danger',
                     })
-                    ->formatStateUsing(fn(string $state) => match ($state){
+                    ->formatStateUsing(fn(string $state) => match ($state) {
                         '1' => 'Lunas',
                         '0' => 'Belum Lunas',
                     })

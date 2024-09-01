@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ramsey\Uuid\Uuid;
 
 class Iuran extends Model
 {
@@ -20,8 +20,8 @@ class Iuran extends Model
         return $this->belongsTo(Siswa::class);
     }
 
-
-    public function kelas(){
+    public function kelas()
+    {
         return $this->belongsTo(Kelas::class);
     }
 

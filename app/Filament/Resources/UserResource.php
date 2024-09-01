@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Spatie\Permission\Models\Role;
-use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\User;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -68,7 +68,7 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role.name')
+                Tables\Columns\TextColumn::make('role.name'),
             ])
             ->filters([
                 TrashedFilter::make(),
