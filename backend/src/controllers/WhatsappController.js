@@ -45,7 +45,7 @@ export const sendNewMessage = async (req, res) => {
 
 export const sendNewBulkMessage = async (req, res) => {
     try {
-        console.log('Log : sendNewBulkMessage');
+        console.log('Log : sendNewBulkMessage Euy');
         const { bulk } = req.body;
 
         await Promise.all([body('bulk', 'bulk is required').notEmpty()].map((validation) => validation.run(req)));
@@ -60,6 +60,7 @@ export const sendNewBulkMessage = async (req, res) => {
             return errorResponse(res, 400, 'Error in validation', errorValidation);
         }
 
+        console.log(bulk);
         const status = await sendBulkMessage(bulk);
         return successResponse(res, 200, 'Message success sent', status);
     } catch (error) {

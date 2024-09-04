@@ -16,9 +16,9 @@ class SendBulkMessageJob implements ShouldQueue
 
     public function __construct(array $bulkMessages)
     {
+
         $this->bulkMessages = $bulkMessages;
     }
-
 
     public function handle(WhatsappService $whatsappService): void
     {

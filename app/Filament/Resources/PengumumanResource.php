@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PengumumanResource\Pages;
 use App\Models\Pengumuman;
+use App\Services\WhatsappService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -57,6 +59,39 @@ class PengumumanResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('Send Notification')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->action(function (Pengumuman $record) {
+                        $message = $record->judul . ' ' . $record->deksripsi;
+                        $bulk = [
+                            [
+                                "number" => "087826753532",
+                                "message" => $message,
+                            ],
+                            [
+                                "number" => "081930865458",
+                                "message" => $message,
+                            ],
+                        ];
+
+                        $whatsappService = new WhatsappService();
+
+                        try {
+                            $whatsappService->sendBulkMessage($bulk);
+
+                            Notification::make()
+                                ->title('Notification sent')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+
+                            Notification::make()
+                                ->title('Failed to send notification')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),

@@ -59,7 +59,7 @@ export const sendMessage = async (number, message) => {
 
 export const sendBulkMessage = async (bulk) => {
     try {
-        console.log('Log : sendBulkMessage');
+        console.log('Log : sendBulkMessage Cuy');
 
         for (const { number, message } of bulk) {
             await sendMessage(number, message);
