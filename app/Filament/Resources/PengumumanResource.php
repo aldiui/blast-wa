@@ -2,15 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PengumumanResource\Pages;
-use App\Models\Pengumuman;
-use App\Services\WhatsappService;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Kelas;
+use App\Models\Siswa;
+use Filament\Forms\Form;
+use App\Models\Pengumuman;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Services\WhatsappService;
+use Filament\Notifications\Notification;
+use App\Filament\Resources\PengumumanResource\Pages;
 
 class PengumumanResource extends Resource
 {
@@ -59,37 +61,46 @@ class PengumumanResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('Send Notification')
+                Tables\Actions\Action::make('Blast')
                     ->icon('heroicon-o-paper-airplane')
-                    ->action(function (Pengumuman $record) {
-                        $message = $record->judul . ' ' . $record->deksripsi;
-                        $bulk = [
-                            [
-                                "number" => "087826753532",
-                                "message" => $message,
-                            ],
-                            [
-                                "number" => "081930865458",
-                                "message" => $message,
-                            ],
+                    ->color('info')
+                    ->form(function (Pengumuman $record) {
+                        return [
+                            Forms\Components\Select::make('target')
+                                ->required()
+                                ->options(Kelas::all()->pluck('nama', 'id'))
+                                ->label('Pilih Kelas')
+                                ->searchable()
+                                ->multiple()
+                                ->columnSpan(2),
                         ];
+                    })
+                    ->action(function (Pengumuman $record, array $data) {
+                        $kelas = $data['target'];
+                        $bulk = [];
+                        foreach ($kelas as $k) {
+                            $checkKelas = Kelas::find($k);
+                            if ($checkKelas) {
+                                $siswas = Siswa::where('kelas_id', $checkKelas->id)->get();
+                                foreach ($siswas as $siswa) {
+                                    $bulk[] = [
+                                        'number' => '087826753532',
+                                        'message' => 'aku maling',
+                                    ];
+                                }
+                            }
+                        }
+
+                        dd($bulk);
 
                         $whatsappService = new WhatsappService();
+                        $whatsappService->sendBulkMessage(compact('bulk'));
 
-                        try {
-                            $whatsappService->sendBulkMessage($bulk);
-
-                            Notification::make()
-                                ->title('Notification sent')
-                                ->success()
-                                ->send();
-                        } catch (\Exception $e) {
-
-                            Notification::make()
-                                ->title('Failed to send notification')
-                                ->danger()
-                                ->send();
-                        }
+                        Notification::make()
+                            ->title('Pengumuman')
+                            ->body('Pengumuman terkirim')
+                            ->success()
+                            ->send();
                     }),
 
                 Tables\Actions\EditAction::make(),
