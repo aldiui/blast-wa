@@ -1,7 +1,6 @@
 import { makeWASocket, useMultiFileAuthState } from '@whiskeysockets/baileys';
 import qrCode from 'qrcode-terminal';
 import NumberHelper from '../helpers/NumberHelper.js';
-import { errorResponse } from '../helpers/ResponseHelper.js';
 
 let sock;
 
@@ -55,7 +54,6 @@ export const sendMessage = async (number, message) => {
         return status;
     } catch (error) {
         console.log(error);
-        return errorResponse(res, 500, 'Internal Server Error', error);
     }
 };
 
@@ -70,6 +68,5 @@ export const sendBulkMessage = async (bulk) => {
         return true;
     } catch (error) {
         console.log(error);
-        return errorResponse(res, 500, 'Internal Server Error', error);
     }
 };

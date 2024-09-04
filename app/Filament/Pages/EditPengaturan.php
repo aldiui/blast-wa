@@ -2,20 +2,21 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Pengaturan;
 use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Pages\Page;
+use App\Models\Pengaturan;
+use Illuminate\Support\HtmlString;
+use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Pages\Page;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\HtmlString;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 
 class EditPengaturan extends Page implements HasForms
 {
-    use InteractsWithForms;
+    use InteractsWithForms, HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 

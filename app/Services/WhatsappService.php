@@ -43,9 +43,7 @@ class WhatsappService
             $url = config('app.backend') . '/api/message/bulk';
             $response = $client->request('POST', $url, [
                 'verify' => false,
-                'json' => [
-                    'bulk' => $request,
-                ],
+                'json' => $request,
             ]);
             return true;
         } catch (\Exception $e) {

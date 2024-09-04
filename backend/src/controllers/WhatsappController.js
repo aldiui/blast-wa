@@ -42,6 +42,7 @@ export const sendNewMessage = async (req, res) => {
     }
 };
 
+
 export const sendNewBulkMessage = async (req, res) => {
     try {
         console.log('Log : sendNewBulkMessage');
