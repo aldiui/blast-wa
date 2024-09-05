@@ -2,15 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Enums\FiltersLayout;
+use App\Filament\Resources\SiswaResource\Pages;
+use App\Filament\Resources\SiswaResource\RelationManagers\TabungansRelationManager;
+use App\Filament\Resources\SiswaResource\RelationManagers\IuransRelationManager;
+use App\Filament\Resources\SiswaResource\RelationManagers\DaftarUlangsRelationManager;
 
 class SiswaResource extends Resource
 {
@@ -104,7 +107,9 @@ class SiswaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            DaftarUlangsRelationManager::class,
+            TabungansRelationManager::class,
+            IuransRelationManager::class,
         ];
     }
 

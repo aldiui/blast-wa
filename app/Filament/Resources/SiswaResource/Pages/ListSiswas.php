@@ -21,6 +21,7 @@ class ListSiswas extends ListRecords
                 ->color("warning")
                 ->use(SiswaImport::class),
             Actions\CreateAction::make(),
+            Actions\CreupdaateAction::make(),
         ];
     }
 }

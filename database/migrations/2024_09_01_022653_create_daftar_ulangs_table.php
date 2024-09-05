@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('keterangan');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('siswa_id')->references('id')->on('siswas')->onDelete('cascade');
+            $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
+
         });
     }
 

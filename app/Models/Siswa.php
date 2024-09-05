@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Models\Iuran;
 use App\Models\Kelas;
+use Ramsey\Uuid\Uuid;
 use App\Models\Tabungan;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DaftarUlang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Siswa extends Model
 {
@@ -29,6 +30,9 @@ class Siswa extends Model
     public function iurans()
     {
         return $this->hasMany(Iuran::class);
+    }
+    public function daftarulangs(){
+        return $this->hasMany(DaftarUlang::class);
     }
 
     public static function boot()

@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Kelas;
-use App\Models\Siswa;
-use Filament\Forms\Form;
-use App\Models\Pengumuman;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Services\WhatsappService;
-use Filament\Notifications\Notification;
 use App\Filament\Resources\PengumumanResource\Pages;
+use App\Models\Kelas;
+use App\Models\Pengumuman;
+use App\Models\Siswa;
+use App\Services\WhatsappService;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class PengumumanResource extends Resource
 {
@@ -84,18 +84,16 @@ class PengumumanResource extends Resource
                                 $siswas = Siswa::where('kelas_id', $checkKelas->id)->get();
                                 foreach ($siswas as $siswa) {
                                     $bulk[] = [
-                                        'number' => '087826753532',
-                                        'message' => 'aku maling',
+                                        'number' => $siswa->nomor_hp,
+                                        'message' => $record->deksripsi,
                                     ];
                                 }
                             }
                         }
 
-                        dd($bulk);
-
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendBulkMessage(compact('bulk'));
-
+                        
                         Notification::make()
                             ->title('Pengumuman')
                             ->body('Pengumuman terkirim')

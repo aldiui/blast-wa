@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('setorans', function (Blueprint $table) {
+        Schema::create('setoran_daftar_ulangs', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('tabungan_id');
-            $table->enum('transaksi', ['Pemasukan', 'Pengeluaran']);
+            $table->unsignedBigInteger('daftar_ulang_id');
             $table->bigInteger('nominal');
             $table->date('tanggal');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('tabungan_id')->references('id')->on('tabungans')->onDelete('cascade');
+            $table->foreign('daftar_ulang_id')->references('id')->on('daftar_ulangs')->onDelete('cascade');
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('setorans');
+        Schema::dropIfExists('setoran_daftar_ulangs');
     }
 };
