@@ -92,7 +92,7 @@ class IuranResource extends Resource
                                 '1' => 'Lunas',
                                 '0' => 'Belum Lunas',
                             ])
-                            ->default(0)
+                            ->default('0')
                             ->required(),
                     ])->columns(2),
             ]);
@@ -134,12 +134,15 @@ class IuranResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
             ])
             ->paginated([50, 100, 'all']);

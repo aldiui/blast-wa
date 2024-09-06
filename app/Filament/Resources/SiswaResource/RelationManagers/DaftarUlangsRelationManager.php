@@ -2,61 +2,27 @@
 
 namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Forms\Components\Textarea;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class DaftarUlangsRelationManager extends RelationManager
 {
     protected static string $relationship = 'daftarUlangs';
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('tahun_ajaran')
-                ->label('Tahun Ajaran')
-                ->required()
-                ->default(cekTahunAjaran())
-                ->maxLength(255),
-            Forms\Components\DatePicker::make('tanggal')
-                ->required(),
-            Forms\Components\TextInput::make('biaya')
-                ->required()
-                ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
-                ->prefix('Rp')
-                ->default(getPengaturan()->daftar_ulang),
-            Forms\Components\Select::make('status')
-                ->label('Status')
-                ->options([
-                    '1' => 'Lunas',
-                    '0' => 'Belum Lunas',
-                ])
-                ->default(0)
-                ->required(),
-            Textarea::make('keterangan')
-                ->autosize(),
-        ])->columns(2);
-    }
 
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('biaya')
             ->columns([
-                
+
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('biaya')
+                Tables\Columns\TextColumn::make('biaya')
                     ->formatStateUsing(function ($state) {
                         return formatRupiah($state);
                     })
@@ -80,19 +46,13 @@ class DaftarUlangsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
             ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+            ->recordUrl(
+                fn($record): string => '/daftar-ulang/' . $record->uuid . '/edit',
+            )
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
             ]);
     }

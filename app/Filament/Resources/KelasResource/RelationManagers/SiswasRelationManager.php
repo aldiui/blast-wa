@@ -26,9 +26,13 @@ class SiswasRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
             ])
+            ->recordUrl(
+                fn ($record): string => '/siswa/' . $record->uuid . '/edit',
+            )
             ->paginated([50, 100, 'all']);
     }
 }

@@ -4,15 +4,20 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Iuran;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\Tabungan;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\DaftarUlang;
 use Filament\Resources\Resource;
+use App\Services\WhatsappService;
+use Filament\Notifications\Notification;
 use Filament\Tables\Enums\FiltersLayout;
 use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers\TabungansRelationManager;
 use App\Filament\Resources\SiswaResource\RelationManagers\IuransRelationManager;
+use App\Filament\Resources\SiswaResource\RelationManagers\TabungansRelationManager;
 use App\Filament\Resources\SiswaResource\RelationManagers\DaftarUlangsRelationManager;
 
 class SiswaResource extends Resource
@@ -88,16 +93,99 @@ class SiswaResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\Action::make('Blast')
+                ->icon('heroicon-o-paper-airplane')
+                ->color('info')
+                ->action(function ($record) {
+                    $tabungan = Tabungan::where('siswa_id', $record->id)->sum('saldo');
+                    $iuranSyahriyah = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('syahriyah');
+                    $iuranFieldTrip = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('field_trip');
+                    $iuranUangMakan = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('uang_makan');
+                    $daftarUlang = DaftarUlang::where('siswa_id', $record->id)->whereStatus('0')->sum('biaya');
+                    $tabunganRupiah = formatRupiah($tabungan);
+                    $iuranSyahriyahRupiah = formatRupiah($iuranSyahriyah);
+                    $iuranFieldTripRupiah = formatRupiah($iuranFieldTrip);
+                    $iuranUangMakanRupiah = formatRupiah($iuranUangMakan);
+
+                    $totalIuran = $iuranSyahriyah + $iuranFieldTrip + $iuranUangMakan;
+                    $totalIuranRupiah = formatRupiah($totalIuran);
+
+                    $tahunAjaran = cekTahunAjaran();
+
+                    $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class'; // Adjust if necessary
+                    $nis = $record->nis;
+                    $nama = $record->nama;
+                    $orangTua = $record->orang_tua;
+                    $noTelepon = $record->no_telepon;
+                    $alamat = $record->alamat;
+
+                    $sekolah = getPengaturan()->nama;
+                
+                    $text = <<<EOT
+                SISTEM KEUANGAN SEKOLAH
+                INFORMASI TAGIHAN
+                ==========================
+                
+                Assalamu’alaikum Warahmatullahi Wabarakatuh,
+                
+                Yth Bapak/Ibu Wali Murid,
+                
+                Berdasarkan data pada sistem kami hingga 10 Juli 2024 11:45 WIB kami sampaikan data tagihan ananda hingga Bulan Juli 2024:
+                
+                Siswa:
+                NIS      : $nis
+                Nama  : $nama
+                Kelas   : $kelas
+
+                
+                Tabungan Tahun 2024/2025  $tabunganRupiah
+                
+                Rincian Tagihan:
+                • Syahriyah Tahun 2024/2025 (Juli) $iuranSyahriyahRupiah
+                • Fieldtrip Tahun 2024/2025 (Juli) $iuranFieldTripRupiah
+                • Uang Makan Tahun 2024/2025 (Juli) $iuranUangMakanRupiah
+                ----------------------------------
+                Total Tagihan: $totalIuranRupiah
+
+
+                
+                Untuk buku paket bisa diambil di sekolah mulai pada hari Selasa,16 Juli 2024 di guru kelas masing-masing
+                
+                Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
+                Wassalamu'alaikum Warahmatullahi Wabarakatuh,
+                
+                $sekolah
+                EOT;
+                
+                    $whatsappService = new WhatsappService();
+                    $whatsappService->sendMessage([
+                        'number' => "081930865458",
+                        "message" => $text
+                    ]);
+                
+                    Notification::make()
+                        ->title('Whatsapp')
+                        ->body('Whatsapp terkirim')
+                        ->success()
+                        ->send();
+                }),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash'),
+                Tables\Actions\RestoreAction::make()
+                    ->icon('heroicon-o-refresh'),
+                Tables\Actions\ForceDeleteAction::make()
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->icon('heroicon-o-refresh'),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
                 ])
                 ->paginated([50, 100, 'all']);

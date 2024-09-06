@@ -65,7 +65,7 @@ class DaftarUlangResource extends Resource
                             '1' => 'Lunas',
                             '0' => 'Belum Lunas',
                         ])
-                        ->default(0)
+                        ->default('0')
                         ->required(),
                     Textarea::make('keterangan')
                         ->autosize(),
@@ -113,16 +113,23 @@ class DaftarUlangResource extends Resource
                 TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash'),
+                Tables\Actions\RestoreAction::make()
+                    ->icon('heroicon-o-refresh'),
+                Tables\Actions\ForceDeleteAction::make()
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->icon('heroicon-o-refresh'),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
             ])
             ->paginated([50, 100, 'all']);

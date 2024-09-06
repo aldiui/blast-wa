@@ -23,6 +23,17 @@ class SetoransRelationManager extends RelationManager
                     ->required()
                     ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                     ->maxLength(255),
+                Forms\Components\DateTimePicker::make('tanggal')
+                    ->default(now())
+                    ->required(),
+                Forms\Components\Select::make('pembayaran')
+                    ->label('Pembayaran')
+                    ->options([
+                        'Cash' => 'Cash',
+                        'Transfer' => 'Transfer',
+                    ])
+                    ->default('0')
+                    ->required(),
                 Forms\Components\Select::make('transaksi')
                     ->required()
                     ->options([
@@ -43,6 +54,20 @@ class SetoransRelationManager extends RelationManager
                     ->date("d F Y")
                     ->label('Tanggal')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('pembayaran')
+                    ->badge()
+                    ->icon(fn(string $state): string => match ($state) {
+                        'Cash' => 'heroicon-o-banknotes',
+                        'Transfer' => 'heroicon-o-credit-card',
+                    })
+                    ->color(fn(string $state): string => match ($state) {
+                        'Cash' => 'success',
+                        'Transfer' => 'info',
+                    })
+                    ->formatStateUsing(function ($state) {
+                        return $state;
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('transaksi')
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
@@ -62,6 +87,7 @@ class SetoransRelationManager extends RelationManager
                         return formatRupiah($state);
                     })
                     ->searchable(),
+                Tables\Columns\TextColumn::make('tanggal'),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()

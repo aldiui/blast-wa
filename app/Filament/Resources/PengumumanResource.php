@@ -84,13 +84,12 @@ class PengumumanResource extends Resource
                                 $siswas = Siswa::where('kelas_id', $checkKelas->id)->get();
                                 foreach ($siswas as $siswa) {
                                     $bulk[] = [
-                                        'number' => $siswa->nomor_hp,
+                                        'number' => $siswa->no_telepon,
                                         'message' => $record->deksripsi,
                                     ];
                                 }
                             }
                         }
-
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendBulkMessage(compact('bulk'));
                         
@@ -101,16 +100,23 @@ class PengumumanResource extends Resource
                             ->send();
                     }),
 
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash'),
+                Tables\Actions\RestoreAction::make()
+                    ->icon('heroicon-o-refresh'),
+                Tables\Actions\ForceDeleteAction::make()
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->icon('heroicon-o-refresh'),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                 ]),
             ])
             ->paginated([50, 100, 'all']);

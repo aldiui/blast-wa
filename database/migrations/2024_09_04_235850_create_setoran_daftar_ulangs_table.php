@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('daftar_ulang_id');
+            $table->enum('pembayaran', ['Cash', 'Transfer']);
             $table->bigInteger('nominal');
             $table->date('tanggal');
             $table->softDeletes();

@@ -2,14 +2,14 @@
 
 namespace App\Filament\Resources\DaftarUlangResource\Pages;
 
+use App\Filament\Resources\DaftarUlangResource;
+use App\Models\DaftarUlang;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Actions;
-use App\Models\DaftarUlang;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\DaftarUlangResource;
 
 class ListDaftarUlangs extends ListRecords
 {
@@ -20,7 +20,8 @@ class ListDaftarUlangs extends ListRecords
         return [
             Actions\CreateAction::make(),
             Actions\Action::make('daftarUlangByKelas')
-                ->label('Tambah Daftar Ulang Berdasar Kelas')
+                ->icon('heroicon-o-document-text')
+                ->label('Generate')
                 ->form([
                     Select::make('kelas_id')
                         ->label('Pilih Kelas')
@@ -40,7 +41,7 @@ class ListDaftarUlangs extends ListRecords
                             'tahun_ajaran' => cekTahunAjaran(),
                             'tanggal' => now(),
                             'biaya' => getPengaturan()->daftar_ulang,
-                            'status' => '0', 
+                            'status' => '0',
                             'keterangan' => 'Belum Lunas',
                         ]);
                     }
@@ -52,7 +53,7 @@ class ListDaftarUlangs extends ListRecords
                         ->send();
                 })
                 ->requiresConfirmation()
-                ->color('primary'),
+                ->color('info'),
 
         ];
     }

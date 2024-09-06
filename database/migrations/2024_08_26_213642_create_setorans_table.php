@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('tabungan_id');
+            $table->enum('pembayaran', ['Cash', 'Transfer']);
             $table->enum('transaksi', ['Pemasukan', 'Pengeluaran']);
             $table->bigInteger('nominal');
             $table->date('tanggal');

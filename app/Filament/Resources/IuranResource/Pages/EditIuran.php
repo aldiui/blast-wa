@@ -13,7 +13,12 @@ class EditIuran extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\Action::make('kembali')
+            ->color('warning')
+            ->label('Kembali')
+            ->url(fn ($record) => '/siswa/' . $record->siswa->uuid . '/edit'),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 }

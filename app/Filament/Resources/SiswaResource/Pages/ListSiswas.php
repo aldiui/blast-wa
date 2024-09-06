@@ -20,7 +20,8 @@ class ListSiswas extends ListRecords
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color("warning")
                 ->use(SiswaImport::class),
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus'),
         ];
     }
 }
