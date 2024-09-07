@@ -4,9 +4,9 @@ namespace App\Filament\Widgets;
 
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class CountingOverview extends BaseWidget
 {

@@ -17,12 +17,12 @@ class EditTabungan extends EditRecord
     {
         return [
             Actions\Action::make('kembali')
-            ->icon('heroicon-o-arrow-left')
-            ->color('warning')
-            ->label('Kembali')
-            ->url(fn ($record) => '/siswa/' . $record->siswa->uuid . '/edit'),
+                ->icon('heroicon-o-arrow-left')
+                ->color('warning')
+                ->label('Kembali')
+                ->url(fn($record) => '/siswa/' . $record->siswa->uuid . '/edit'),
             Actions\DeleteAction::make()
-            ->icon('heroicon-o-trash'),
+                ->icon('heroicon-o-trash'),
         ];
     }
 

@@ -14,9 +14,9 @@ class EditIuran extends EditRecord
     {
         return [
             Actions\Action::make('kembali')
-            ->color('warning')
-            ->label('Kembali')
-            ->url(fn ($record) => '/siswa/' . $record->siswa->uuid . '/edit'),
+                ->color('warning')
+                ->label('Kembali')
+                ->url(fn($record) => '/siswa/' . $record->siswa->uuid . '/edit'),
             Actions\DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];

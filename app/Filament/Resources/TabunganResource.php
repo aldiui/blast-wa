@@ -47,7 +47,7 @@ class TabunganResource extends Resource
                             'Tabungan Reguler' => 'Tabungan Reguler',
                         ])
                         ->searchable(),
-                        
+
                     Forms\Components\TextInput::make('saldo')
                         ->prefix('Rp')
                         ->required()

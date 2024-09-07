@@ -92,7 +92,7 @@ class PengumumanResource extends Resource
                         }
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendBulkMessage(compact('bulk'));
-                        
+
                         Notification::make()
                             ->title('Pengumuman')
                             ->body('Pengumuman terkirim')
@@ -100,7 +100,7 @@ class PengumumanResource extends Resource
                             ->send();
                     }),
 
-                    Tables\Actions\EditAction::make()
+                Tables\Actions\EditAction::make()
                     ->icon('heroicon-o-pencil'),
                 Tables\Actions\DeleteAction::make()
                     ->icon('heroicon-o-trash'),

@@ -31,7 +31,7 @@ class SiswasRelationManager extends RelationManager
                 ]),
             ])
             ->recordUrl(
-                fn ($record): string => '/siswa/' . $record->uuid . '/edit',
+                fn($record): string => '/siswa/' . $record->uuid . '/edit',
             )
             ->paginated([50, 100, 'all']);
     }
