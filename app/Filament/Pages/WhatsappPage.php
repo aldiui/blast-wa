@@ -25,11 +25,11 @@ class WhatsappPage extends Page
 
     public function mount()
     {
-        // $response = Http::get('http://localhost:3000/api/qrcode');
-        // if ($response->successful()) {
-        //     $qrCodeUrl = $response->json()['qrCodeUrl'];
-        // } else {
-        //     $qrCodeUrl = null;
-        // }
+        $response = Http::get('http://localhost:3000/api/qrcode');
+        if ($response->successful()) {
+            $qrCodeUrl = $response->json()['qrCodeUrl'];
+        } else {
+            $qrCodeUrl = null;
+        }
     }
 }

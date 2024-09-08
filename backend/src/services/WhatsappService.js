@@ -37,9 +37,11 @@ export const getQRCode = () => {
         sock.ev.on('connection.update', (update) => {
             const { qr } = update;
             if (qr) {
-                qrCode.toDataURL(qr, (url) => {
-                    return resolve(url);
-                });
+                if (qr) {
+                    const qrBase64 = generateQRBase64(qr);
+
+                    return qrBase64;
+                }
             }
         });
     });
@@ -70,3 +72,14 @@ export const sendBulkMessage = async (bulk) => {
         console.log(error);
     }
 };
+
+async function generateQRBase64(qrContent) {
+    try {
+        const qrOptions = { type: 'png', small: true };
+        const qrImageBuffer = await qrCode.toBuffer(qrContent, qrOptions);
+        return qrImageBuffer.toString('base64');
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+        return null;
+    }
+}
