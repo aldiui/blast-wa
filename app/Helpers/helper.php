@@ -54,3 +54,20 @@ if (!function_exists('cekTahunAjaran')) {
         return "$startYear/$endYear";
     }
 }
+if (!function_exists('getNextClass')) {
+    function getNextClass($currentClass)
+    {
+        if (preg_match('/(\d+)\s([A-Z]+)/', $currentClass, $matches)) {
+            $currentGrade = (int) $matches[1]; 
+            $currentSection = $matches[2];  
+
+            $newGrade = $currentGrade + 1;
+            if ($newGrade >= 7) {
+                $newGrade = 'Lulus';
+            }
+            $newGrade = $newGrade . ' ' . $currentSection;
+            return $newGrade ;
+        }
+        return null;
+    }
+}

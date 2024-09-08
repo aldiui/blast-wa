@@ -112,7 +112,7 @@ class SiswaResource extends Resource
 
                         $tahunAjaran = cekTahunAjaran();
 
-                        $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class'; // Adjust if necessary
+                        $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class'; 
                         $nis = $record->nis;
                         $nama = $record->nama;
                         $orangTua = $record->orang_tua;
@@ -138,12 +138,12 @@ class SiswaResource extends Resource
                 Kelas   : $kelas
 
 
-                Tabungan Tahun 2024/2025  $tabunganRupiah
+                Tabungan Tahun $tahunAjaran $tabunganRupiah
 
                 Rincian Tagihan:
-                • Syahriyah Tahun 2024/2025 (Juli) $iuranSyahriyahRupiah
-                • Fieldtrip Tahun 2024/2025 (Juli) $iuranFieldTripRupiah
-                • Uang Makan Tahun 2024/2025 (Juli) $iuranUangMakanRupiah
+                • Syahriyah Tahun $tahunAjaran (Juli) $iuranSyahriyahRupiah
+                • Fieldtrip Tahun $tahunAjaran (Juli) $iuranFieldTripRupiah
+                • Uang Makan Tahun $tahunAjaran (Juli) $iuranUangMakanRupiah
                 ----------------------------------
                 Total Tagihan: $totalIuranRupiah
 
