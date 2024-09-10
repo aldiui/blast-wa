@@ -2,8 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Services\WhatsappService;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Http;
 
 class WhatsappPage extends Page
 {
@@ -21,15 +21,11 @@ class WhatsappPage extends Page
 
     protected static ?int $navigationSort = 1;
 
-    public $qrCodeUrl;
+    public $whatsapp;
 
     public function mount()
     {
-        $response = Http::get('http://localhost:3000/api/qrcode');
-        if ($response->successful()) {
-            $qrCodeUrl = $response->json()['qrCodeUrl'];
-        } else {
-            $qrCodeUrl = null;
-        }
+        $whatsappService = new WhatsappService;
+        $this->whatsapp = $whatsappService->connectWhatsapp();
     }
 }

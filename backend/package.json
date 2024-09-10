@@ -16,6 +16,7 @@
     "express": "^4.19.2",
     "express-queue": "^0.0.13",
     "express-validator": "^7.2.0",
+    "qr-image": "^3.2.0",
     "qrcode-terminal": "^0.12.0"
   }
 }

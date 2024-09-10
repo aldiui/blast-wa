@@ -1,22 +1,18 @@
 import { makeWASocket, useMultiFileAuthState } from '@whiskeysockets/baileys';
-import qrCode from 'qrcode-terminal';
 import NumberHelper from '../helpers/NumberHelper.js';
+import qrImage from 'qr-image';
+import fs from 'fs';
 
 let sock;
 
 export const connectWhatsApp = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('./src/cache');
     sock = makeWASocket({
-        printQRInTerminal: true,
         auth: state,
     });
 
     sock.ev.on('connection.update', (update) => {
-        const { qr, connection } = update;
-
-        if (qr) {
-            qrCode.generate(qr, { small: true });
-        }
+        const { connection } = update;
 
         if (connection === 'close') {
             connectWhatsApp();
@@ -30,6 +26,13 @@ export const connectWhatsApp = async () => {
 
 export const getQRCode = () => {
     return new Promise((resolve, reject) => {
+        const cacheDir = './src/cache';
+        const sessionExists = fs.existsSync(cacheDir) && fs.readdirSync(cacheDir).length > 0;
+
+        if (sessionExists) {
+            return resolve('You are already logged in');
+        }
+
         if (!sock) {
             return reject('Socket not connected');
         }
@@ -37,11 +40,10 @@ export const getQRCode = () => {
         sock.ev.on('connection.update', (update) => {
             const { qr } = update;
             if (qr) {
-                if (qr) {
-                    const qrBase64 = generateQRBase64(qr);
+                const imageBuffer = qrImage.imageSync(qr, { type: 'png' });
+                const base64Image = imageBuffer.toString('base64');
 
-                    return qrBase64;
-                }
+                return resolve(base64Image);
             }
         });
     });
@@ -72,14 +74,3 @@ export const sendBulkMessage = async (bulk) => {
         console.log(error);
     }
 };
-
-async function generateQRBase64(qrContent) {
-    try {
-        const qrOptions = { type: 'png', small: true };
-        const qrImageBuffer = await qrCode.toBuffer(qrContent, qrOptions);
-        return qrImageBuffer.toString('base64');
-    } catch (error) {
-        console.error('Error generating QR code:', error);
-        return null;
-    }
-}

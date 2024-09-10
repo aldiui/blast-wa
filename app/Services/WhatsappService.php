@@ -14,7 +14,7 @@ class WhatsappService
             $response = $client->request('GET', $url, [
                 'verify' => false,
             ]);
-            return true;
+            return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
             return false;
         }
