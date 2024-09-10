@@ -20,7 +20,7 @@ class PengumumanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bell-alert';
 
-    protected static ?string $recordTitleAttribute = 'nama';
+    protected static ?string $recordTitleAttribute = 'judul';
 
     protected static ?string $navigationLabel = 'Pengumuman';
 
