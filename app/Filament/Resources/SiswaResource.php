@@ -147,6 +147,8 @@ class SiswaResource extends Resource
                 ----------------------------------
                 Total Tagihan: $totalIuranRupiah
 
+                Tunggakan Sekiah
+
 
 
                 Untuk buku paket bisa diambil di sekolah mulai pada hari Selasa,16 Juli 2024 di guru kelas masing-masing
@@ -159,7 +161,7 @@ class SiswaResource extends Resource
 
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendMessage([
-                            'number' => "081930865458",
+                            'number' => "085314636377",
                             "message" => $text,
                         ]);
 
