@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('syahriyah');
             $table->unsignedBigInteger('uang_makan');
             $table->unsignedBigInteger('field_trip');
-            $table->enum('status', ['0', '1'])->default('0');
+            $table->enum('pembayaran', ['Cash', 'Transfer'])->default('Cash');
             $table->timestamps();
             $table->softDeletes();
 

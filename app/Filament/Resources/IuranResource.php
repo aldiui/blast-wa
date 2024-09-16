@@ -86,13 +86,13 @@ class IuranResource extends Resource
                             ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                             ->prefix('Rp')
                             ->default(getPengaturan()->field_trip),
-                        Forms\Components\Select::make('status')
-                            ->label('Status')
+                        Forms\Components\Select::make('pembayaran')
+                            ->label('Pembayaran')
                             ->options([
-                                '1' => 'Lunas',
-                                '0' => 'Belum Lunas',
+                                'Cash' => 'Cash',
+                                'Transfer' => 'Transfer',
                             ])
-                            ->default('0')
+                            ->default('Cash')
                             ->required(),
                     ])->columns(2),
             ]);
@@ -113,20 +113,18 @@ class IuranResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                Tables\Columns\TextColumn::make('pembayaran')
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
-                        '1' => 'heroicon-o-check-circle',
-                        '0' => 'heroicon-o-x-circle',
+                        'Cash' => 'heroicon-o-banknotes',
+                        'Transfer' => 'heroicon-o-credit-card',
                     })
                     ->color(fn(string $state): string => match ($state) {
-                        '1' => 'success',
-                        '0' => 'danger',
+                        'Cash' => 'success',
+                        'Transfer' => 'info',
                     })
-                    ->formatStateUsing(fn(string $state) => match ($state) {
-                        '1' => 'Lunas',
-                        '0' => 'Belum Lunas',
+                    ->formatStateUsing(function ($state) {
+                        return $state;
                     })
                     ->searchable(),
             ])

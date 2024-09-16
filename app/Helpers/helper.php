@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Pengaturan;
+use illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\Pengaturan;
 
 if (!function_exists('formatTanggal')) {
     function formatTanggal($tanggal = null, $format = 'l, j F Y')
@@ -69,5 +70,21 @@ if (!function_exists('getNextClass')) {
             return $newGrade ;
         }
         return null;
+    }
+}
+
+if (!function_exists('generateBase64Image')) {
+    function generateBase64Image($imagePath)
+    {
+        if (file_exists($imagePath)) {
+            $data = file_get_contents($imagePath);
+            $type = pathinfo($imagePath, PATHINFO_EXTENSION);
+            $base64Image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            Log::info('Base64 Image Generated: ' . $base64Image); // Tambahkan log ini
+            return $base64Image;
+        } else {
+            \Log::error('File not found: ' . $imagePath); // Tambahkan log ini
+            return '';
+        }
     }
 }

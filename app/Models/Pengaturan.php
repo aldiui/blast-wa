@@ -17,6 +17,7 @@ class Pengaturan extends Model
         return $this->attributes['logo'] ? url('storage/' . $this->attributes['logo']) : null;
     }
 
+
     public static function boot()
     {
         parent::boot();
