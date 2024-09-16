@@ -20,7 +20,6 @@ class TabunganResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static ?string $recordTitleAttribute = 'nama';
 
     protected static ?string $navigationLabel = 'Tabungan';
 
