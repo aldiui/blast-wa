@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Iuran;
 use App\Models\Setoran;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SetoranDaftarUlang;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
@@ -24,8 +24,7 @@ class PdfController extends Controller
         $setorans = Setoran::with(['tabungan.siswa'])->whereDate('tanggal', $tanggal)->get();
         $setorandaftarulang = SetoranDaftarUlang::with(['daftarUlang.siswa'])->whereDate('tanggal', $tanggal)->get();
 
-
-        $pdf = Pdf::loadView('laporan-harian', compact('iurans','tanggal', 'setorans', 'setorandaftarulang'));
+        $pdf = Pdf::loadView('laporan-harian', compact('iurans', 'tanggal', 'setorans', 'setorandaftarulang'));
 
         // Set opsi tambahan untuk PDF
         $options = [

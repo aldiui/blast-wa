@@ -1,8 +1,7 @@
 <?php
 
-use illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 use App\Models\Pengaturan;
+use Carbon\Carbon;
 
 if (!function_exists('formatTanggal')) {
     function formatTanggal($tanggal = null, $format = 'l, j F Y')
@@ -59,15 +58,15 @@ if (!function_exists('getNextClass')) {
     function getNextClass($currentClass)
     {
         if (preg_match('/(\d+)\s([A-Z]+)/', $currentClass, $matches)) {
-            $currentGrade = (int) $matches[1]; 
-            $currentSection = $matches[2];  
+            $currentGrade = (int) $matches[1];
+            $currentSection = $matches[2];
 
             $newGrade = $currentGrade + 1;
             if ($newGrade >= 7) {
                 $newGrade = 'Lulus';
             }
             $newGrade = $newGrade . ' ' . $currentSection;
-            return $newGrade ;
+            return $newGrade;
         }
         return null;
     }
@@ -80,7 +79,7 @@ if (!function_exists('generateBase64Image')) {
             $data = file_get_contents($imagePath);
             $type = pathinfo($imagePath, PATHINFO_EXTENSION);
             $base64Image = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            Log::info('Base64 Image Generated: ' . $base64Image); // Tambahkan log ini
+            \Log::info('Base64 Image Generated: ' . $base64Image); // Tambahkan log ini
             return $base64Image;
         } else {
             \Log::error('File not found: ' . $imagePath); // Tambahkan log ini

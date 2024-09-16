@@ -34,8 +34,9 @@
         <tbody>
             <tr>
                 <td width='20%'>
-                    {{-- Uncomment jika ingin menambahkan logo --}}
-                    <img width='120px' src="{{ generateBase64Image(getPengaturan()->logo ?? 'pengaturan/01J6M56BW0D2F38EKF0MY5QHF6.png') }}" alt="">
+                    <img width='120px'
+                        src="{{ generateBase64Image('storage/pengaturan/' . basename(getPengaturan()->logo)) }}"
+                        alt="">
                 </td>
                 <td align="center">
                     <h3>Laporan Harian</h3>
@@ -54,7 +55,7 @@
         </tbody>
     </table>
     <hr style="height:1px;background-color:black;">
-    
+
     <div>
         <center>
             <h3><u>Data Pemasukan dan Pengeluaran {{ $tanggal }}</u></h3>
@@ -72,11 +73,11 @@
             </thead>
             <tbody>
                 @php
-                    $no = 1; 
+                    $no = 1;
                     $totalPemasukan = 0;
                     $totalPengeluaran = 0;
                 @endphp
-                @foreach($setorandaftarulang as $daful)
+                @foreach ($setorandaftarulang as $daful)
                     @php
                         $totalPemasukan += $daful->nominal;
                     @endphp
@@ -88,23 +89,23 @@
                         <td>-</td>
                     </tr>
                 @endforeach
-                @foreach($setorans as $setoran)
+                @foreach ($setorans as $setoran)
                     <tr>
                         <td style="text-align: center;">{{ $no++ }}</td>
                         <td>{{ $setoran->tabungan->siswa->nama }}</td>
                         <td>Tabungan</td>
                         @if ($setoran->transaksi == 'Pemasukan')
-                        @php
-                        $totalPemasukan += $setoran->nominal;
-                        @endphp
-                        <td style="text-align: right;">{{ formatRupiah($setoran->nominal) }}</td>
-                        <td>-</td>
+                            @php
+                                $totalPemasukan += $setoran->nominal;
+                            @endphp
+                            <td style="text-align: right;">{{ formatRupiah($setoran->nominal) }}</td>
+                            <td>-</td>
                         @else
-                        @php
-                        $totalPengeluaran += $setoran->nominal;
-                        @endphp
-                        <td>-</td>
-                        <td style="text-align: right;">{{ formatRupiah($setoran->nominal) }}</td>
+                            @php
+                                $totalPengeluaran += $setoran->nominal;
+                            @endphp
+                            <td>-</td>
+                            <td style="text-align: right;">{{ formatRupiah($setoran->nominal) }}</td>
                         @endif
                 @endforeach
                 @forelse ($iurans as $iuran)
@@ -131,7 +132,9 @@
                 </tr>
                 <tr>
                     <td colspan="3" align="right"><strong>Total</strong></td>
-                    <td style="text-align: right;" colspan="2"><strong>{{ formatRupiah($totalPemasukan - $totalPengeluaran) }}</strong></td>
+                    <td style="text-align: right;" colspan="2">
+                        <strong>{{ formatRupiah($totalPemasukan - $totalPengeluaran) }}</strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
