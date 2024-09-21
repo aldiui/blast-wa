@@ -85,7 +85,7 @@ class PdfController extends Controller
         $pdf->setOptions($options, true); ;
         $pdf->setPaper('a4', 'landscape');
 
-        $namaFile = 'Laporan_Iuran_' . $tanggal . '.pdf';
+        $namaFile = 'Laporan_Iuran.pdf';
 
         ob_end_clean();
         ob_start();
