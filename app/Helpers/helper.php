@@ -37,23 +37,35 @@ if (!function_exists('getPengaturan')) {
 }
 
 if (!function_exists('cekTahunAjaran')) {
-    function cekTahunAjaran($tanggal = null)
+    function cekTahunAjaran()
     {
-        $date = Carbon::parse($tanggal ?? Carbon::now());
-        $year = $date->year;
-        $academicYearStart = Carbon::create($year, 7, 1);
+        $tahunSekarang = now()->year;
+        $bulanSekarang = now()->month;
 
-        if ($date->greaterThanOrEqualTo($academicYearStart)) {
-            $startYear = $year;
-            $endYear = $year + 1;
+        // Tentukan tahun ajaran berdasarkan bulan sekarang
+        if ($bulanSekarang >= 1 && $bulanSekarang <= 6) {
+            $tahunAjaranSekarang = ($tahunSekarang - 1) . '/' . $tahunSekarang;
+            $mulaiTahun = $tahunSekarang - 1;
         } else {
-            $startYear = $year - 1;
-            $endYear = $year;
+            $tahunAjaranSekarang = $tahunSekarang . '/' . ($tahunSekarang + 1);
+            $mulaiTahun = $tahunSekarang;
         }
 
-        return "$startYear/$endYear";
+        // Hasilkan 15 tahun ajaran terakhir
+        $tahunAjaranTerakhir15 = [];
+        for ($i = 0; $i < 15; $i++) {
+            $tahunAjaran = ($mulaiTahun - $i) . '/' . ($mulaiTahun - $i + 1);
+            $tahunAjaranTerakhir15[] = $tahunAjaran;
+        }
+
+        return [
+            'tahunAjaranSekarang' => $tahunAjaranSekarang,
+            'tahunAjaranTerakhir15' => $tahunAjaranTerakhir15,
+        ];
     }
 }
+
+
 if (!function_exists('getNextClass')) {
     function getNextClass($currentClass)
     {
@@ -63,9 +75,10 @@ if (!function_exists('getNextClass')) {
 
             $newGrade = $currentGrade + 1;
             if ($newGrade >= 7) {
-                $newGrade = 'Lulus';
+                $newGrade = null;
+            } else {
+                $newGrade = $newGrade . ' ' . $currentSection;
             }
-            $newGrade = $newGrade . ' ' . $currentSection;
             return $newGrade;
         }
         return null;
@@ -87,3 +100,18 @@ if (!function_exists('generateBase64Image')) {
         }
     }
 }
+
+if (!function_exists('getTahunTerakhir')) {
+    function getTahunTerakhir($jumlahTahun = 10)
+    {
+        $tahunSekarang = now()->year;
+        $tahunTerakhir = [];
+
+        for ($i = 0; $i < $jumlahTahun; $i++) {
+            $tahunTerakhir[] = $tahunSekarang - $i;
+        }
+
+        return $tahunTerakhir;
+    }
+}
+

@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kelas;
-use App\Models\Pengaturan;
 use App\Models\User;
+use App\Models\Kelas;
+use Ramsey\Uuid\Uuid;
+use App\Models\Pengaturan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'uuid' => Uuid::uuid4()->toString(),
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => '11221122',
@@ -43,11 +45,13 @@ class DatabaseSeeder extends Seeder
 
         foreach ($kelasData as $data) {
             Kelas::create([
+                'uuid' => Uuid::uuid4()->toString(),
                 'nama' => $data['nama']
             ]);
         }
 
         Pengaturan::create([
+            'uuid' => Uuid::uuid4()->toString(),
             'nama' => 'MI Condong',
             'logo' => 'logo.png',
             'email' => 'micondong@gmail.com',

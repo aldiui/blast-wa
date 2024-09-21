@@ -17,7 +17,7 @@ class EditSiswa extends EditRecord
                 ->icon('heroicon-o-arrow-left')
                 ->color('warning')
                 ->label('Kembali')
-                ->url(fn($record) => '/kelas/' . $record->kelas->uuid . '/edit'),
+                ->url(fn($record) => $record->kelas_id ? '/kelas/' . $record->kelas->uuid . '/edit' : '/siswa'),
             Actions\DeleteAction::make()
                 ->icon('heroicon-o-trash'),
 

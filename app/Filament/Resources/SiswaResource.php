@@ -74,13 +74,17 @@ class SiswaResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('kelas.nama')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nis')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('orang_tua')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('no_telepon')
                     ->label('Nomor Telepon')
                     ->searchable(),

@@ -50,4 +50,18 @@ class WhatsappService
             return false;
         }
     }
+    
+    public function logoutWhatsapp()
+    {
+        try {
+            $client = new Client();
+            $url = config('app.backend') . '/api/logout';
+            $response = $client->request('GET', $url, [
+                'verify' => false,
+            ]);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DaftarUlangResource\Pages;
-use App\Filament\Resources\DaftarUlangResource\RelationManagers\SetoranDaftarUlangsRelationManager;
-use App\Models\DaftarUlang;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Filament\Forms;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use App\Models\DaftarUlang;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Filters\TrashedFilter;
+use App\Filament\Resources\DaftarUlangResource\Pages;
+use App\Filament\Resources\DaftarUlangResource\RelationManagers\SetoranDaftarUlangsRelationManager;
 
 class DaftarUlangResource extends Resource
 {
@@ -47,11 +48,13 @@ class DaftarUlangResource extends Resource
                         ->required()
                         ->options(Kelas::all()->pluck('nama', 'id'))
                         ->searchable(),
-                    Forms\Components\TextInput::make('tahun_ajaran')
+                        Select::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
                         ->required()
-                        ->default(cekTahunAjaran())
-                        ->maxLength(255),
+                        ->options(
+                            cekTahunAjaran()['tahunAjaranTerakhir15']
+                        )
+                        ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                     Forms\Components\DatePicker::make('tanggal')
                         ->required(),
                     Forms\Components\TextInput::make('biaya')

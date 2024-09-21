@@ -23,9 +23,12 @@ class WhatsappPage extends Page
 
     public $whatsapp;
 
+    public $logout;
+
     public function mount()
     {
         $whatsappService = new WhatsappService;
         $this->whatsapp = $whatsappService->connectWhatsapp();
+        $this->logout = $whatsappService->logoutWhatsapp();
     }
 }

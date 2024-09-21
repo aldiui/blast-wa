@@ -18,7 +18,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $recordTitleAttribute = 'name'; // Should be an existing attribute like 'name'
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'Users';
 
@@ -68,7 +68,8 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role.name'),
+                Tables\Columns\TextColumn::make('role.name')
+                    ->label('Role'),
             ])
             ->filters([
                 TrashedFilter::make(),

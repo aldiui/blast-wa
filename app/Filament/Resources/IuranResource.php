@@ -7,6 +7,7 @@ use App\Models\Iuran;
 use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -63,11 +64,13 @@ class IuranResource extends Resource
                                 'Desember' => 'Desember',
                             ])
                             ->required(),
-                        Forms\Components\TextInput::make('tahun_ajaran')
+                        Select::make('tahun_ajaran')
                             ->label('Tahun Ajaran')
                             ->required()
-                            ->default(cekTahunAjaran())
-                            ->maxLength(255),
+                            ->options(
+                                cekTahunAjaran()['tahunAjaranTerakhir15']
+                            )
+                            ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                         Forms\Components\DatePicker::make('tanggal')
                             ->required()
                             ->default(now()),
@@ -93,6 +96,14 @@ class IuranResource extends Resource
                                 'Transfer' => 'Transfer',
                             ])
                             ->default('Cash')
+                            ->required(),
+                        Forms\Components\Select::make('status')
+                            ->label('Status')
+                            ->options([
+                                '0' => 'Belum Lunas',
+                                '1' => 'Lunas',
+                            ])
+                            ->default('0')
                             ->required(),
                     ])->columns(2),
             ]);

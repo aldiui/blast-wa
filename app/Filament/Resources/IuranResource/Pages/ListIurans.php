@@ -95,10 +95,13 @@ class ListIurans extends ListRecords
                             'Desember' => 'Desember',
                         ])
                         ->required(),
-                    TextInput::make('tahun_ajaran')
+                        Select::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
                         ->required()
-                        ->default(cekTahunAjaran()),
+                        ->options(
+                            cekTahunAjaran()['tahunAjaranTerakhir15']
+                        )
+                        ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                 ]),
         ];
     }

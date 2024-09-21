@@ -4,29 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Models\Iuran;
 use App\Models\Setoran;
-use App\Models\SetoranDaftarUlang;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DaftarUlang;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\SetoranDaftarUlang;
 
 class PdfController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil tanggal dari request yang dikirim oleh tombol Filament
-        $tanggal = $request->input('tanggal');
+        $jenis = $request->jenis;
+        $tipe = $request->tipe;
+        
+        $params = [
+            'tipe' => $tipe,
+            'jenis' => $jenis,
+        ];
+        
+        if($jenis == 'laporan') {
+            if($tipe == 'harian') {
+                $tanggal = $request->tanggal;
+                $iurans = Iuran::with('siswa')->whereDate('tanggal', $tanggal)->get();
+                $setorans = Setoran::with(['tabungan.siswa'])->whereDate('tanggal', $tanggal)->get();
+                $setorandaftarulang = SetoranDaftarUlang::with(['daftarUlang.siswa'])->whereDate('tanggal', $tanggal)->get();
+                $params['tanggal'] = $tanggal;
+            } elseif($tipe == 'bulanan') {
+                $bulan = $request->bulan;
+                $tahun = $request->tahun;
+                $iurans = Iuran::with('siswa')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+                $setorans = Setoran::with(['tabungan.siswa'])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+                $setorandaftarulang = SetoranDaftarUlang::with(['daftarUlang.siswa'])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+                $params['bulan'] = $bulan;
+                $params['tahun'] = $tahun;
+            } elseif($tipe == 'tahunan') {
+                $tahun = $request->tahun;
+                $iurans = Iuran::with('siswa')->whereYear('tanggal', $tahun)->get();
+                $setorans = Setoran::with(['tabungan.siswa'])->whereYear('tanggal', $tahun)->get();
+                $setorandaftarulang = SetoranDaftarUlang::with(['daftarUlang.siswa'])->whereYear('tanggal', $tahun)->get();
+                $params['tahun'] = $tahun;
+            }
 
-        if (!$tanggal) {
-            return redirect()->back()->withErrors(['message' => 'Tanggal harus disertakan']);
+            $params['iurans'] = $iurans;
+            $params['setorans'] = $setorans;
+            $params['setorandaftarulang'] = $setorandaftarulang;
+        } elseif ($jenis == 'tunggakan') {
+
+            if($tipe == 'harian') {
+                $tanggal = $request->tanggal;
+                $iurans = Iuran::with('siswa')->whereDate('tanggal', $tanggal)->where('status', '0')->get();
+                $daftarulang = DaftarUlang::with(['daftarUlang.siswa'])->whereDate('tanggal', $tanggal)->where('status', '0')->get();
+                $params['tanggal'] = $tanggal;
+            } elseif($tipe == 'bulanan') {
+                $bulan = $request->bulan;
+                $tahun = $request->tahun;
+                $iurans = Iuran::with('siswa')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('status', '0')->get();
+                $daftarulang = DaftarUlang::with(['daftarUlang.siswa'])->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->where('status', '0')->get();
+                $params['bulan'] = $bulan;
+                $params['tahun'] = $tahun;
+            } elseif($tipe == 'tahunan') {
+                $tahun = $request->tahun;
+                $iurans = Iuran::with('siswa')->whereYear('tanggal', $tahun)->where('status', '0')->get();
+                $daftarulang = DaftarUlang::with(['daftarUlang.siswa'])->whereYear('tanggal', $tahun)->where('status', '0')->get();
+                $params['tahun'] = $tahun;
+            }
+
+            $params['iurans'] = $iurans;
+            $params['setorandaftarulang'] = $daftarulang;
         }
 
-        // Query Iuran berdasarkan tanggal
-        $iurans = Iuran::with('siswa')->whereDate('tanggal', $tanggal)->get();
-        $setorans = Setoran::with(['tabungan.siswa'])->whereDate('tanggal', $tanggal)->get();
-        $setorandaftarulang = SetoranDaftarUlang::with(['daftarUlang.siswa'])->whereDate('tanggal', $tanggal)->get();
 
-        $pdf = Pdf::loadView('laporan-harian', compact('iurans', 'tanggal', 'setorans', 'setorandaftarulang'));
+        $pdf = Pdf::loadView('laporan-harian', $params);
 
-        // Set opsi tambahan untuk PDF
         $options = [
             'margin_top' => 20,
             'margin_right' => 20,
@@ -34,17 +82,14 @@ class PdfController extends Controller
             'margin_left' => 20,
         ];
 
-        $pdf->setOptions($options);
+        $pdf->setOptions($options, true); ;
         $pdf->setPaper('a4', 'landscape');
 
-        // Nama file yang akan dihasilkan
         $namaFile = 'Laporan_Iuran_' . $tanggal . '.pdf';
 
-        // Membersihkan output buffer sebelum stream
         ob_end_clean();
         ob_start();
 
-        // Stream file PDF
         return $pdf->stream($namaFile);
     }
 }

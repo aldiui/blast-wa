@@ -28,6 +28,13 @@ class ListDaftarUlangs extends ListRecords
                         ->options(Kelas::all()->pluck('nama', 'id'))
                         ->required()
                         ->searchable(),
+                    Select::make('tahun_ajaran')
+                        ->label('Tahun Ajaran')
+                        ->required()
+                        ->options(
+                            cekTahunAjaran()['tahunAjaranTerakhir15']
+                        )
+                        ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                 ])
                 ->action(function (array $data) {
                     $kelasId = $data['kelas_id'];
@@ -38,7 +45,7 @@ class ListDaftarUlangs extends ListRecords
                         DaftarUlang::create([
                             'siswa_id' => $siswa->id,
                             'kelas_id' => $kelasId,
-                            'tahun_ajaran' => cekTahunAjaran(),
+                            'tahun_ajaran' => $tahun_ajaran,
                             'tanggal' => now(),
                             'biaya' => getPengaturan()->daftar_ulang,
                             'status' => '0',

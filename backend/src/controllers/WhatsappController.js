@@ -1,4 +1,4 @@
-import { sendMessage, getQRCode, sendBulkMessage } from '../services/WhatsappService.js';
+import { sendMessage, getQRCode, sendBulkMessage, logoutWhatsApp } from '../services/WhatsappService.js';
 import { successResponse, errorResponse } from '../helpers/ResponseHelper.js';
 import { body, validationResult } from 'express-validator';
 
@@ -63,6 +63,17 @@ export const sendNewBulkMessage = async (req, res) => {
         console.log(bulk);
         const status = await sendBulkMessage(bulk);
         return successResponse(res, 200, 'Message success sent', status);
+    } catch (error) {
+        console.log(error);
+        return errorResponse(res, 500, 'Internal Server Error', error);
+    }
+};
+
+export const logout = async (req, res) => {
+    try {
+        console.log('Log : logout');
+        const status = await logoutWhatsApp();
+        return successResponse(res, 200, 'Logout success', status);
     } catch (error) {
         console.log(error);
         return errorResponse(res, 500, 'Internal Server Error', error);
