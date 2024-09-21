@@ -87,6 +87,9 @@ class DaftarUlangResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kelas.nama')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('tahun_ajaran')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date()
                     ->sortable(),

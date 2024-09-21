@@ -25,19 +25,20 @@ class ListDaftarUlangs extends ListRecords
                 ->form([
                     Select::make('kelas_id')
                         ->label('Pilih Kelas')
-                        ->options(Kelas::all()->pluck('nama', 'id'))
+                        ->options(Kelas::all()->pluck('nama', 'id')->toArray()) // pastikan ini mengembalikan array
                         ->required()
                         ->searchable(),
                     Select::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
                         ->required()
                         ->options(
-                            cekTahunAjaran()['tahunAjaranTerakhir15']
+                            cekTahunAjaran()['tahunAjaranTerakhir15']// pastikan ini associative array seperti yang dibahas sebelumnya
                         )
                         ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                 ])
                 ->action(function (array $data) {
                     $kelasId = $data['kelas_id'];
+                    $tahunAjaran = $data['tahun_ajaran']; // tangkap nilai tahun ajaran dari form
 
                     $siswaList = Siswa::where('kelas_id', $kelasId)->get();
 
@@ -45,7 +46,7 @@ class ListDaftarUlangs extends ListRecords
                         DaftarUlang::create([
                             'siswa_id' => $siswa->id,
                             'kelas_id' => $kelasId,
-                            'tahun_ajaran' => $tahun_ajaran,
+                            'tahun_ajaran' => $tahunAjaran, // simpan nilai tahun ajaran
                             'tanggal' => now(),
                             'biaya' => getPengaturan()->daftar_ulang,
                             'status' => '0',
