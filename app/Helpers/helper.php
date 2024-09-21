@@ -55,8 +55,9 @@ if (!function_exists('cekTahunAjaran')) {
         $tahunAjaranTerakhir15 = [];
         for ($i = 0; $i < 15; $i++) {
             $tahunAjaran = ($mulaiTahun - $i) . '/' . ($mulaiTahun - $i + 1);
-            $tahunAjaranTerakhir15[] = $tahunAjaran;
+            $tahunAjaranTerakhir15[$tahunAjaran] = $tahunAjaran;
         }
+        
 
         return [
             'tahunAjaranSekarang' => $tahunAjaranSekarang,
