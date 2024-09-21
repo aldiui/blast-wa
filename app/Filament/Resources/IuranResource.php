@@ -124,6 +124,17 @@ class IuranResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        '1' => 'success',
+                        '0' => 'info',
+                    })
+                    ->formatStateUsing(fn(string $state) => match ($state) {
+                        '0' => 'Belum Lunas',
+                        '1' => 'Lunas',
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('pembayaran')
                     ->badge()
                     ->icon(fn(string $state): string => match ($state) {
