@@ -53,7 +53,8 @@ class ListSiswas extends ListRecords
                 Select::make('jenis')
                 ->label('Jenis')
                 ->options([
-                    'laporan' => 'Laporan',
+                    'laporan_singkat' => 'Laporan Singkat',
+                    'laporan' => 'Laporan Lengkap',
                     'tunggakan' => 'Tunggakan',
                 ])
                 ->required(),

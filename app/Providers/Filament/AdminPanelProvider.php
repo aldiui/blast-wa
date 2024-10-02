@@ -31,6 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->profile()
             ->globalSearch()
+            ->sidebarWidth('13rem')
+            ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth('5rem')
             ->maxContentWidth('full')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->colors([

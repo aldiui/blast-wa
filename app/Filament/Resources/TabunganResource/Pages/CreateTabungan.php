@@ -12,6 +12,11 @@ class CreateTabungan extends CreateRecord
 {
     protected static string $resource = TabunganResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
+
     protected function handleRecordCreation(array $data): Model
     {
         $cekTabungan = Tabungan::where([

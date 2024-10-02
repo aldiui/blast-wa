@@ -19,13 +19,15 @@ class IuransRelationManager extends RelationManager
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('siswa.nama')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kelas.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bulan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()

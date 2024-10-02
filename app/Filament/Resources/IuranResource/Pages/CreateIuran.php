@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateIuran extends CreateRecord
 {
     protected static string $resource = IuranResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }

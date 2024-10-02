@@ -91,7 +91,7 @@ class PengumumanResource extends Resource
                             }
                         }
                         $whatsappService = new WhatsappService();
-                        $whatsappService->sendBulkMessage(compact('bulk'));
+                        dd($whatsappService->sendBulkMessage(compact('bulk')));
 
                         Notification::make()
                             ->title('Pengumuman')

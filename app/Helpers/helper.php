@@ -58,7 +58,6 @@ if (!function_exists('cekTahunAjaran')) {
             $tahunAjaranTerakhir15[$tahunAjaran] = $tahunAjaran;
         }
         
-
         return [
             'tahunAjaranSekarang' => $tahunAjaranSekarang,
             'tahunAjaranTerakhir15' => $tahunAjaranTerakhir15,
@@ -109,7 +108,8 @@ if (!function_exists('getTahunTerakhir')) {
         $tahunTerakhir = [];
 
         for ($i = 0; $i < $jumlahTahun; $i++) {
-            $tahunTerakhir[] = $tahunSekarang - $i;
+            $tahunSekarang = $tahunSekarang - $i;
+            $tahunTerakhir[$tahunSekarang] = $tahunSekarang;
         }
 
         return $tahunTerakhir;

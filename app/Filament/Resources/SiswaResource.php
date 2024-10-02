@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class SiswaResource extends Resource
 {
@@ -36,9 +37,16 @@ class SiswaResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['nama', 'nis'];
+        return ['nama', 'nis']; 
     }
 
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Nama' => $record->nama,
+            'Nis' => $record->nis,
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -72,6 +80,153 @@ class SiswaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\Action::make('bulk_blast')
+                    ->label('Blast')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('info')
+                    ->form(function () {
+                        return [
+                            Forms\Components\Select::make('kelas')
+                                ->required()
+                                ->options(fn () => Kelas::all()->pluck('nama', 'id'))
+                                ->label('Pilih Kelas')
+                                ->multiple()
+                                ->columnSpan(2),
+                            Forms\Components\Select::make('bulan')
+                                ->required()
+                                ->options(
+                                    [
+                                        'Januari' => 'Januari',
+                                        'Februari' => 'Februari',
+                                        'Maret' => 'Maret',
+                                        'April' => 'April',
+                                        'Mei' => 'Mei',
+                                        'Juni' => 'Juni',
+                                        'Juli' => 'Juli',
+                                        'Agustus' => 'Agustus',
+                                        'September' => 'September',
+                                        'Oktober' => 'Oktober',
+                                        'November' => 'November',
+                                        'Desember' => 'Desember',
+                                    ]
+                                ),
+                            Forms\Components\Select::make('tahun_ajaran')
+                                ->required()
+                                ->options(
+                                    cekTahunAjaran()['tahunAjaranTerakhir15']
+                                )
+                                ->label('Pilih Tahun Ajaran')
+                                ->columnSpan(2),
+                        ];
+                    })
+
+                    ->action(function ($record, array $data) {
+                        $kelasIds = $data['kelas'];
+                        $bulan = $data['bulan'];
+                        $tahunAjaran = $data['tahun_ajaran'];
+                        $waktu = now();
+                        $bulk = [];
+
+                        foreach ($kelasIds as $kelasId) {
+                            $kelas = Kelas::find($kelasId);
+                            if ($kelas) {
+                                $siswas = Siswa::where('kelas_id', $kelas->id)->get();
+
+                                if ($siswas->isNotEmpty()) {
+                                    foreach ($siswas as $siswa) {
+
+                                        if (!empty($siswa->no_telepon || $siswa->no_telpon != '081930865458' )) {$tabungan = Tabungan::where('siswa_id', $siswa->id)->sum('saldo');
+
+                                            // Menambahkan filter bulan ke setiap query Iuran
+                                            $iuranSyahriyah = Iuran::where('siswa_id', $siswa->id)
+                                                ->where('status', '0')
+                                                ->where('bulan', $bulan) // Filter berdasarkan bulan
+                                                ->where('tahun_ajaran', $tahunAjaran)
+                                                ->sum('syahriyah');
+                                            
+                                            $iuranFieldTrip = Iuran::where('siswa_id', $siswa->id)
+                                                ->where('status', '0')
+                                                ->where('bulan', $bulan) // Filter berdasarkan bulan
+                                                ->where('tahun_ajaran', $tahunAjaran)
+                                                ->sum('field_trip');
+                                            
+                                            $iuranUangMakan = Iuran::where('siswa_id', $siswa->id)
+                                                ->where('status', '0')
+                                                ->where('bulan', $bulan) // Filter berdasarkan bulan
+                                                ->where('tahun_ajaran', $tahunAjaran)
+                                                ->sum('uang_makan');
+                                            
+                                            $tabunganRupiah = formatRupiah($tabungan);
+                                            $iuranSyahriyahRupiah = formatRupiah($iuranSyahriyah);
+                                            $iuranFieldTripRupiah = formatRupiah($iuranFieldTrip);
+                                            $iuranUangMakanRupiah = formatRupiah($iuranUangMakan);
+
+                                            $totalIuran = $iuranSyahriyah + $iuranFieldTrip + $iuranUangMakan;
+                                            $totalIuranRupiah = formatRupiah($totalIuran);
+
+                                            $tahunAjaran = cekTahunAjaran()['tahunAjaranSekarang'];
+                                            $nis = $siswa->nis;
+                                            $nama = $siswa->nama;
+                                            $kelasNama = $kelas->nama;
+                                            $sekolah = getPengaturan()->nama;
+
+                                            $text = <<<EOT
+                                SISTEM KEUANGAN SEKOLAH
+                                INFORMASI TAGIHAN
+                                ==========================
+
+                                Assalamu’alaikum Warahmatullahi Wabarakatuh,
+
+                                Yth Bapak/Ibu Wali Murid,
+
+                                Berdasarkan data pada sistem kami hingga $waktu, kami sampaikan data tagihan ananda hingga Bulan $bulan Tahun $tahunAjaran:
+
+                                Siswa:
+                                NIS      : $nis
+                                Nama  : $nama
+                                Kelas   : $kelasNama
+
+                                Tabungan Tahun $tahunAjaran $tabunganRupiah
+
+                                Rincian Tagihan:
+                                • Syahriyah Tahun $tahunAjaran (Juli) $iuranSyahriyahRupiah
+                                • Fieldtrip Tahun $tahunAjaran (Juli) $iuranFieldTripRupiah
+                                • Uang Makan Tahun $tahunAjaran (Juli) $iuranUangMakanRupiah
+                                ----------------------------------
+                                Total Tagihan: $totalIuranRupiah
+
+                                Untuk buku paket bisa diambil di sekolah mulai pada hari Selasa,16 Juli 2024 di guru kelas masing-masing
+
+                                Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
+                                Wassalamu'alaikum Warahmatullahi Wabarakatuh,
+
+                                $sekolah
+                            EOT;
+
+                                            $bulk[] = [
+                                                'number' => $siswa->no_telepon,
+                                                'message' => $text,
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Mengirim pesan bulk menggunakan WhatsappService
+                        $whatsappService = new WhatsappService();
+                        $whatsappService->sendBulkMessage(compact('bulk'));
+                        
+                        // Menampilkan notifikasi setelah pesan dikirim
+                        Notification::make()
+                            ->title('Whatsapp')
+                            ->body('Pesan WhatsApp berhasil dikirim ke siswa di kelas yang dipilih.')
+                            ->success()
+                            ->send();
+                    }),
+
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('kelas.nama')
                     ->sortable()
@@ -114,9 +269,9 @@ class SiswaResource extends Resource
                         $totalIuran = $iuranSyahriyah + $iuranFieldTrip + $iuranUangMakan;
                         $totalIuranRupiah = formatRupiah($totalIuran);
 
-                        $tahunAjaran = cekTahunAjaran();
+                        $tahunAjaran = cekTahunAjaran()['tahunAjaranSekarang'];
 
-                        $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class'; 
+                        $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class';
                         $nis = $record->nis;
                         $nama = $record->nama;
                         $orangTua = $record->orang_tua;
@@ -162,10 +317,9 @@ class SiswaResource extends Resource
 
                 $sekolah
                 EOT;
-
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendMessage([
-                            'number' => "081930865458",
+                            'number' => $noTelepon,
                             "message" => $text,
                         ]);
 
@@ -180,7 +334,7 @@ class SiswaResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->icon('heroicon-o-trash'),
                 Tables\Actions\RestoreAction::make()
-                    ->icon('heroicon-o-refresh'),
+                    ->icon('heroicon-o-arrow-path'),
                 Tables\Actions\ForceDeleteAction::make()
                     ->icon('heroicon-o-trash'),
             ])
@@ -189,7 +343,7 @@ class SiswaResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->icon('heroicon-o-trash'),
                     Tables\Actions\RestoreBulkAction::make()
-                        ->icon('heroicon-o-refresh'),
+                        ->icon('heroicon-o-arrow-path'),
                     Tables\Actions\ForceDeleteBulkAction::make()
                         ->icon('heroicon-o-trash'),
                 ]),

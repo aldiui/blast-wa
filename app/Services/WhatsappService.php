@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Log;
 use GuzzleHttp\Client;
 
 class WhatsappService
@@ -47,6 +48,7 @@ class WhatsappService
             ]);
             return true;
         } catch (\Exception $e) {
+            Log::error('Error sending bulk message: ' . $e->getMessage());
             return false;
         }
     }

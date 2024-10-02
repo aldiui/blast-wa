@@ -8,4 +8,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDaftarUlang extends CreateRecord
 {
     protected static string $resource = DaftarUlangResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }

@@ -117,7 +117,8 @@ class IuranResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('siswa.nama')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kelas.nama')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bulan')
