@@ -28,17 +28,15 @@ class PdfController extends Controller
         } elseif ($jenis == 'laporan_singkat') {
             $this->laporanSingkat($tipe, $request, $params);
         }
-
         $pdf = Pdf::loadView('laporan', $params);
+        // $options = [
+        //     'margin_top' => 0,
+        //     'margin_right' => 20,
+        //     'margin_bottom' => 0,
+        //     'margin_left' => 20,
+        // ];
 
-        $options = [
-            'margin_top' => 20,
-            'margin_right' => 20,
-            'margin_bottom' => 20,
-            'margin_left' => 20,
-        ];
-
-        $pdf->setOptions($options);
+        // $pdf->setOptions($options);
         $pdf->setPaper('a4', 'landscape');
 
         $namaFile = 'Laporan_Iuran.pdf';
@@ -46,7 +44,8 @@ class PdfController extends Controller
         return $pdf->stream($namaFile);
     }
 
-    private function laporanSingkat($tipe, Request $request, &$params){
+    private function laporanSingkat($tipe, Request $request, &$params)
+    {
         if($tipe == 'harian'){
             $tanggal = $request->input('tanggal');
             $params['tanggal'] = $tanggal;
@@ -74,38 +73,98 @@ class PdfController extends Controller
         if ($tipe == 'harian') {
             $tanggal = $request->input('tanggal');
             $params['tanggal'] = $tanggal;
-
-            $params['iuransCash'] = $this->getIuran('Cash', $tanggal, 'tanggal', 'harian');
-            $params['iuransTransfer'] = $this->getIuran('Transfer', $tanggal, 'tanggal', 'harian');
-            $params['setoransCash'] = $this->getSetoran('Cash', $tanggal, 'tanggal', 'harian');
-            $params['setoransTransfer'] = $this->getSetoran('Transfer', $tanggal, 'tanggal', 'harian');
-            $params['setorandaftarulangCash'] = $this->getSetoranDaftarUlang('Cash', $tanggal, 'tanggal', 'harian');
-            $params['setorandaftarulangTransfer'] = $this->getSetoranDaftarUlang('Transfer', $tanggal, 'tanggal', 'harian');
+    
+            $params['iuransCash'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
+            $params['iuransTransfer'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
+            $params['setoransCash'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
+            $params['setoransTransfer'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
+            $params['setorandaftarulangCash'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
+            $params['setorandaftarulangTransfer'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereDate('tanggal', $tanggal)
+                ->get();
         } elseif ($tipe == 'bulanan') {
             $bulan = $request->input('bulan');
             $tahun = $request->input('tahun');
             $params['bulan'] = $bulan;
             $params['tahun'] = $tahun;
-
-            $params['iuransCash'] = $this->getIuran('Cash', [$bulan, $tahun], 'bulan', 'bulanan');
-            $params['iuransTransfer'] = $this->getIuran('Transfer', [$bulan, $tahun], 'bulan', 'bulanan');
-            $params['setoransCash'] = $this->getSetoran('Cash', [$bulan, $tahun], 'bulan', 'bulanan');
-            $params['setoransTransfer'] = $this->getSetoran('Transfer', [$bulan, $tahun], 'bulan', 'bulanan');
-            $params['setorandaftarulangCash'] = $this->getSetoranDaftarUlang('Cash', [$bulan, $tahun], 'bulan', 'bulanan');
-            $params['setorandaftarulangTransfer'] = $this->getSetoranDaftarUlang('Transfer', [$bulan, $tahun], 'bulan', 'bulanan');
+    
+            $params['iuransCash'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['iuransTransfer'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setoransCash'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setoransTransfer'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setorandaftarulangCash'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setorandaftarulangTransfer'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereMonth('tanggal', $bulan)
+                ->whereYear('tanggal', $tahun)
+                ->get();
         } elseif ($tipe == 'tahunan') {
             $tahun = $request->input('tahun');
             $params['tahun'] = $tahun;
-
-            $params['iuransCash'] = $this->getIuran('Cash', $tahun, 'tahun', 'tahunan');
-            $params['iuransTransfer'] = $this->getIuran('Transfer', $tahun, 'tahun', 'tahunan');
-            $params['setoransCash'] = $this->getSetoran('Cash', $tahun, 'tahun', 'tahunan');
-            $params['setoransTransfer'] = $this->getSetoran('Transfer', $tahun, 'tahun', 'tahunan');
-            $params['setorandaftarulangCash'] = $this->getSetoranDaftarUlang('Cash', $tahun, 'tahun', 'tahunan');
-            $params['setorandaftarulangTransfer'] = $this->getSetoranDaftarUlang('Transfer', $tahun, 'tahun', 'tahunan');
+    
+            $params['iuransCash'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['iuransTransfer'] = Iuran::with('siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setoransCash'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setoransTransfer'] = Setoran::with('tabungan.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setorandaftarulangCash'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Cash')
+                ->whereYear('tanggal', $tahun)
+                ->get();
+            $params['setorandaftarulangTransfer'] = SetoranDaftarUlang::with('daftarUlang.siswa')
+                ->where('pembayaran', 'Transfer')
+                ->whereYear('tanggal', $tahun)
+                ->get();
         }
     }
-
+    
     private function handleTunggakan($tipe, Request $request, &$params)
     {
         if ($tipe == 'harian') {
@@ -142,7 +201,7 @@ class PdfController extends Controller
     private function getSetoran($pembayaran, $date, $dateType, $period)
     {
         return Setoran::with(['tabungan.siswa'])
-            ->where('pembayaran', $pembayaran)
+            ->where('pembayaran', $pembayaran)  // Ensure 'pembayaran' is treated as a string
             ->{$this->getDateMethod($dateType)}('tanggal', ...$this->getDateArguments($date, $period))
             ->get();
     }
@@ -150,7 +209,7 @@ class PdfController extends Controller
     private function getSetoranDaftarUlang($pembayaran, $date, $dateType, $period)
     {
         return SetoranDaftarUlang::with(['daftarUlang.siswa'])
-            ->where('pembayaran', $pembayaran)
+            ->where('pembayaran', $pembayaran)  // Ensure 'pembayaran' is treated as a string
             ->{$this->getDateMethod($dateType)}('tanggal', ...$this->getDateArguments($date, $period))
             ->get();
     }
@@ -159,13 +218,14 @@ class PdfController extends Controller
     {
         return [
             'tanggal' => 'whereDate',
-            'bulan' => 'whereMonth',
+            'bulan' => 'whereMonth',  // Handle only the month here
             'tahun' => 'whereYear',
         ][$type];
     }
 
     private function getDateArguments($date, $period)
     {
+        // Split month and year if needed
         return is_array($date) ? $date : [$date];
     }
 }

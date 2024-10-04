@@ -8,7 +8,7 @@
                 : $data->daftarUlang->siswa->nama) 
         }}
     </td>
-    
+    <td>{{ $data->tanggal}}</td>
     <td>{{ $jenis }}</td>
     <td>{{ $data->pembayaran }}</td>
     <td class="right">{{ $pemasukan == '-' ? '-' : formatRupiah($pemasukan)}}</td>

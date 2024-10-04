@@ -1,13 +1,15 @@
 <div class="center">
-    <h3><u>Data Pemasukan dan Pengeluaran {{ $tipe == 'cash' ? 'Cash' : 'Transfer' }}</u></h3>
-    <p>{{ $tipe == 'harian' ? $tanggal : ($tipe == 'bulanan' ? $bulan . ' ' . $tahun : $tahun) }}</p>
+    <h3><u>Data Pemasukan dan Pengeluaran </u></h3>
+    <p>{{ $tipe == 'harian' ? 'Tanggal : ' . $tanggal : ($tipe == 'bulanan' ? 'Bulan ' . $bulan . ' Tahun ' . $tahun : 'Tahun ' . $tahun) }}
+    </p>
 </div>
-
+<hr>
 <table>
     <thead>
         <tr>
             <th>No</th>
             <th>Nama Siswa</th>
+            <th>Tanggal</th>
             <th>Jenis</th>
             <th>Pembayaran</th>
             <th class="right">Pemasukan</th>
@@ -31,12 +33,14 @@
                         ? $iuranCash->syahriyah + $iuranCash->field_trip + $iuranCash->uang_makan
                         : 0;
             @endphp
-            @include('components.row', [
-                'data' => $iuranCash,
-                'jenis' => 'Iuran',
-                'pemasukan' => $iuranCash->syahriyah + $iuranCash->field_trip + $iuranCash->uang_makan,
-                'pengeluaran' => '-',
-            ])
+            @if ($iuranCash->status == '1' && $iuranCash->pembayaran == 'Cash')
+                @include('components.row', [
+                    'data' => $iuranCash,
+                    'jenis' => 'Iuran',
+                    'pemasukan' => $iuranCash->syahriyah + $iuranCash->field_trip + $iuranCash->uang_makan,
+                    'pengeluaran' => '-',
+                ])
+            @endif
         @endforeach
 
         @foreach ($setoransCash as $setoranCash)
@@ -67,7 +71,7 @@
         @endforeach
 
         <tr>
-            <td colspan="4" class="right"><strong>Jumlah Cash</strong></td>
+            <td colspan="5" class="right"><strong>Jumlah Cash</strong></td>
             <td class="right"><strong>{{ formatRupiah($totalPemasukanCash) }}</strong></td>
             <td class="right"><strong>{{ formatRupiah($totalPengeluaranCash) }}</strong></td>
         </tr>
@@ -121,12 +125,12 @@
 
 
         <tr>
-            <td colspan="4" class="right"><strong>Jumlah Transfer</strong></td>
+            <td colspan="5" class="right"><strong>Jumlah Transfer</strong></td>
             <td class="right"><strong>{{ formatRupiah($totalPemasukanTransfer) }}</strong></td>
             <td class="right"><strong>{{ formatRupiah($totalPengeluaranTransfer) }}</strong></td>
         </tr>
         <tr>
-            <td colspan="4" class="right"><strong>Total</strong></td>
+            <td colspan="5" class="right"><strong>Total</strong></td>
             <td colspan="2" class="right">
                 <strong>{{ formatRupiah($totalPemasukanCash + $totalPemasukanTransfer - $totalPengeluaranCash - $totalPengeluaranTransfer) }}</strong>
             </td>
