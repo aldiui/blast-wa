@@ -37,7 +37,7 @@ class SiswaResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['nama', 'nis']; 
+        return ['nama', 'nis'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
@@ -144,19 +144,19 @@ class SiswaResource extends Resource
                                                 ->where('bulan', $bulan) // Filter berdasarkan bulan
                                                 ->where('tahun_ajaran', $tahunAjaran)
                                                 ->sum('syahriyah');
-                                            
+
                                             $iuranFieldTrip = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
                                                 ->where('bulan', $bulan) // Filter berdasarkan bulan
                                                 ->where('tahun_ajaran', $tahunAjaran)
                                                 ->sum('field_trip');
-                                            
+
                                             $iuranUangMakan = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
                                                 ->where('bulan', $bulan) // Filter berdasarkan bulan
                                                 ->where('tahun_ajaran', $tahunAjaran)
                                                 ->sum('uang_makan');
-                                            
+
                                             $tabunganRupiah = formatRupiah($tabungan);
                                             $iuranSyahriyahRupiah = formatRupiah($iuranSyahriyah);
                                             $iuranFieldTripRupiah = formatRupiah($iuranFieldTrip);
@@ -213,12 +213,10 @@ class SiswaResource extends Resource
                                 }
                             }
                         }
-                        
-                        // Mengirim pesan bulk menggunakan WhatsappService
+
                         $whatsappService = new WhatsappService();
                         $whatsappService->sendBulkMessage(compact('bulk'));
-                        
-                        // Menampilkan notifikasi setelah pesan dikirim
+
                         Notification::make()
                             ->title('Whatsapp')
                             ->body('Pesan WhatsApp berhasil dikirim ke siswa di kelas yang dipilih.')
