@@ -2,19 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Kelas;
-use App\Models\Siswa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\DaftarUlang;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Filters\TrashedFilter;
 use App\Filament\Resources\DaftarUlangResource\Pages;
 use App\Filament\Resources\DaftarUlangResource\RelationManagers\SetoranDaftarUlangsRelationManager;
+use App\Models\DaftarUlang;
+use App\Models\Kelas;
+use App\Models\Siswa;
+use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
 
 class DaftarUlangResource extends Resource
 {
@@ -48,7 +48,7 @@ class DaftarUlangResource extends Resource
                         ->required()
                         ->options(Kelas::all()->pluck('nama', 'id'))
                         ->searchable(),
-                        Select::make('tahun_ajaran')
+                    Select::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
                         ->required()
                         ->options(
@@ -71,6 +71,7 @@ class DaftarUlangResource extends Resource
                         ->default('0')
                         ->required(),
                     Textarea::make('keterangan')
+                        ->default('-')
                         ->autosize(),
                 ])->columns(2),
             ]);
