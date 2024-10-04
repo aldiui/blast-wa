@@ -29,14 +29,14 @@ class PdfController extends Controller
             $this->laporanSingkat($tipe, $request, $params);
         }
         $pdf = Pdf::loadView('laporan', $params);
-        // $options = [
-        //     'margin_top' => 0,
-        //     'margin_right' => 20,
-        //     'margin_bottom' => 0,
-        //     'margin_left' => 20,
-        // ];
+        $options = [
+            'margin_top' => 0,
+            'margin_right' => 20,
+            'margin_bottom' => 0,
+            'margin_left' => 20,
+        ];
 
-        // $pdf->setOptions($options);
+        $pdf->setOptions($options);
         $pdf->setPaper('a4', 'landscape');
 
         $namaFile = 'Laporan_Iuran.pdf';
@@ -188,44 +188,5 @@ class PdfController extends Controller
             $params['iurans'] = Iuran::with('siswa')->whereYear('tanggal', $tahun)->where('status', '0')->get();
             $params['daftarUlangs'] = DaftarUlang::with('siswa')->whereYear('tanggal', $tahun)->where('status', '0')->get();
         }
-    }
-
-    private function getIuran($pembayaran, $date, $dateType, $period)
-    {
-        return Iuran::with('siswa')
-            ->where('pembayaran', $pembayaran)
-            ->{$this->getDateMethod($dateType)}('tanggal', ...$this->getDateArguments($date, $period))
-            ->get();
-    }
-
-    private function getSetoran($pembayaran, $date, $dateType, $period)
-    {
-        return Setoran::with(['tabungan.siswa'])
-            ->where('pembayaran', $pembayaran)  // Ensure 'pembayaran' is treated as a string
-            ->{$this->getDateMethod($dateType)}('tanggal', ...$this->getDateArguments($date, $period))
-            ->get();
-    }
-
-    private function getSetoranDaftarUlang($pembayaran, $date, $dateType, $period)
-    {
-        return SetoranDaftarUlang::with(['daftarUlang.siswa'])
-            ->where('pembayaran', $pembayaran)  // Ensure 'pembayaran' is treated as a string
-            ->{$this->getDateMethod($dateType)}('tanggal', ...$this->getDateArguments($date, $period))
-            ->get();
-    }
-
-    private function getDateMethod($type)
-    {
-        return [
-            'tanggal' => 'whereDate',
-            'bulan' => 'whereMonth',  // Handle only the month here
-            'tahun' => 'whereYear',
-        ][$type];
-    }
-
-    private function getDateArguments($date, $period)
-    {
-        // Split month and year if needed
-        return is_array($date) ? $date : [$date];
     }
 }
