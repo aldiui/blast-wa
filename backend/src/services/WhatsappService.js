@@ -2,7 +2,7 @@ import { makeWASocket, useMultiFileAuthState, DisconnectReason } from '@whiskeys
 import NumberHelper from '../helpers/NumberHelper.js';
 import qrImage from 'qr-image';
 import fs from 'fs';
-import Boom from '@hapi/boom'; 
+import Boom from '@hapi/boom';
 
 let sock;
 
@@ -10,21 +10,22 @@ export const connectWhatsApp = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('./src/cache');
     sock = makeWASocket({
         auth: state,
+        printQRInTerminal: true,
     });
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
 
         if (connection === 'close') {
-             const reason = Boom.isBoom(lastDisconnect?.error)
-             ? lastDisconnect?.error.output.statusCode
-             : Boom.boomify(lastDisconnect?.error)?.output?.statusCode;
+            const reason = Boom.isBoom(lastDisconnect?.error)
+                ? lastDisconnect?.error.output.statusCode
+                : Boom.boomify(lastDisconnect?.error)?.output?.statusCode;
 
-         if (reason === DisconnectReason.loggedOut) {
-             console.log('Logged out from WhatsApp');
-         } else {
-             connectWhatsApp();
-         }
+            if (reason === DisconnectReason.loggedOut) {
+                console.log('Logged out from WhatsApp');
+            } else {
+                connectWhatsApp();
+            }
         }
     });
 
