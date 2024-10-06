@@ -44,6 +44,4 @@
             </tr>
         </tbody>
     </table>
-
-    <p class="text-center">Laporan ini dihasilkan secara otomatis oleh sistem.</p>
 </div>

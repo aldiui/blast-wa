@@ -190,13 +190,11 @@ class SiswaResource extends Resource
                                 Tabungan Tahun $tahunAjaran $tabunganRupiah
 
                                 Rincian Tagihan:
-                                • Syahriyah Tahun $tahunAjaran (Juli) $iuranSyahriyahRupiah
-                                • Fieldtrip Tahun $tahunAjaran (Juli) $iuranFieldTripRupiah
-                                • Uang Makan Tahun $tahunAjaran (Juli) $iuranUangMakanRupiah
+                                • Syahriyah Tahun $tahunAjaran ($bulan) $iuranSyahriyahRupiah
+                                • Fieldtrip Tahun $tahunAjaran ($bulan) $iuranFieldTripRupiah
+                                • Uang Makan Tahun $tahunAjaran ($bulan) $iuranUangMakanRupiah
                                 ----------------------------------
                                 Total Tagihan: $totalIuranRupiah
-
-                                Untuk buku paket bisa diambil di sekolah mulai pada hari Selasa,16 Juli 2024 di guru kelas masing-masing
 
                                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
@@ -253,11 +251,45 @@ class SiswaResource extends Resource
                 Tables\Actions\Action::make('Blast')
                     ->icon('heroicon-o-paper-airplane')
                     ->color('info')
-                    ->action(function ($record) {
+                    ->form(function () {
+                        return [
+                            Forms\Components\Select::make('bulan')
+                                ->required()
+                                ->options(
+                                    [
+                                        'Januari' => 'Januari',
+                                        'Februari' => 'Februari',
+                                        'Maret' => 'Maret',
+                                        'April' => 'April',
+                                        'Mei' => 'Mei',
+                                        'Juni' => 'Juni',
+                                        'Juli' => 'Juli',
+                                        'Agustus' => 'Agustus',
+                                        'September' => 'September',
+                                        'Oktober' => 'Oktober',
+                                        'November' => 'November',
+                                        'Desember' => 'Desember',
+                                    ]
+                                ),
+                            Forms\Components\Select::make('tahun_ajaran')
+                                ->required()
+                                ->options(
+                                    cekTahunAjaran()['tahunAjaranTerakhir15']
+                                )
+                                ->label('Pilih Tahun Ajaran')
+                                ->columnSpan(2),
+                        ];
+                    })
+                    ->action(function ($record, array $data) {
+
+                        $bulan = $data['bulan'];
+                        $tahunAjaran = $data['tahun_ajaran'];
+                        $waktu = now();
+
                         $tabungan = Tabungan::where('siswa_id', $record->id)->sum('saldo');
-                        $iuranSyahriyah = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('syahriyah');
-                        $iuranFieldTrip = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('field_trip');
-                        $iuranUangMakan = Iuran::where('siswa_id', $record->id)->whereStatus('0')->sum('uang_makan');
+                        $iuranSyahriyah = Iuran::where('siswa_id', $record->id)->where('bulan', $bulan)->whereStatus('0')->sum('syahriyah');
+                        $iuranFieldTrip = Iuran::where('siswa_id', $record->id)->where('bulan', $bulan)->whereStatus('0')->sum('field_trip');
+                        $iuranUangMakan = Iuran::where('siswa_id', $record->id)->where('bulan', $bulan)->whereStatus('0')->sum('uang_makan');
                         $daftarUlang = DaftarUlang::where('siswa_id', $record->id)->whereStatus('0')->sum('biaya');
                         $tabunganRupiah = formatRupiah($tabungan);
                         $iuranSyahriyahRupiah = formatRupiah($iuranSyahriyah);
@@ -298,17 +330,11 @@ class SiswaResource extends Resource
                 Tabungan Tahun $tahunAjaran $tabunganRupiah
 
                 Rincian Tagihan:
-                • Syahriyah Tahun $tahunAjaran (Juli) $iuranSyahriyahRupiah
-                • Fieldtrip Tahun $tahunAjaran (Juli) $iuranFieldTripRupiah
-                • Uang Makan Tahun $tahunAjaran (Juli) $iuranUangMakanRupiah
+                • Syahriyah Tahun $tahunAjaran ($bulan) $iuranSyahriyahRupiah
+                • Fieldtrip Tahun $tahunAjaran ($bulan) $iuranFieldTripRupiah
+                • Uang Makan Tahun $tahunAjaran ($bulan) $iuranUangMakanRupiah
                 ----------------------------------
                 Total Tagihan: $totalIuranRupiah
-
-                Tunggakan Sekiah
-
-
-
-                Untuk buku paket bisa diambil di sekolah mulai pada hari Selasa,16 Juli 2024 di guru kelas masing-masing
 
                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
