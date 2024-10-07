@@ -116,6 +116,7 @@ class ListSiswas extends ListRecords
                 ->icon('heroicon-o-arrow-up')
                 ->label('Naik Kelas')
                 ->color("info")
+                ->requiresConfirmation()
                 ->action(function () {
                     $records = Siswa::where('kelas_id', '!=', null)->get();
                     $successMessages = [];

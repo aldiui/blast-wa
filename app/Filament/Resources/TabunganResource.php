@@ -63,10 +63,13 @@ class TabunganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('siswa.nama')
                     ->numeric()
+                    ->label('Siswa')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('siswa.kelas.nama')
                     ->label('Kelas')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_tabungan'),
                 Tables\Columns\TextColumn::make('saldo')
