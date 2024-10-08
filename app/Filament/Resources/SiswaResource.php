@@ -395,6 +395,15 @@ class SiswaResource extends Resource
 
                 Tunggakan : $tunggakanRupiah
 
+                Pembayaran Melalui Transfer Bank:
+                - Bank Syariah Indonesia (BSI)
+                9199998878 a.n. MI CONDONG
+
+                - Bank Rakyat Indonesia (BRI)
+                444401009372539 a.n. MI CONDONG
+
+                Harap konfirmasi ke nomor ini setelah melakukan pembayaran.
+
                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
 
@@ -443,6 +452,7 @@ class SiswaResource extends Resource
             IuransRelationManager::class,
         ];
     }
+
 
     public static function getPages(): array
     {
