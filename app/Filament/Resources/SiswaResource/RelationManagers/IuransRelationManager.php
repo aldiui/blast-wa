@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use App\Models\Iuran;
 use Filament\Tables\Table;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class IuransRelationManager extends RelationManager
 {
@@ -28,9 +29,15 @@ class IuransRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('coba')
-                    ->formatStateUsing(function ($record) {
-                        return formatRupiah($record->syahriyah + $record->uang_makan + $record->field_trip);
+                Tables\Columns\TextColumn::make('Total')
+                    ->formatStateUsing(function (Iuran $record) {
+                        $syahriyah = $record->syahriyah ?? 0;
+                        $uangMakan = $record->uang_makan ?? 0;
+                        $fieldTrip = $record->field_trip ?? 0;
+
+                        $total = $syahriyah + $uangMakan + $fieldTrip;
+
+                        return formatRupiah($total);
                     }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
