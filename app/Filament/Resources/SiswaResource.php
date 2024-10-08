@@ -127,6 +127,7 @@ class SiswaResource extends Resource
                         $bulan = $data['bulan'];
                         $tahunAjaran = $data['tahun_ajaran'];
                         $waktu = now();
+                        $daful = 0;
                         $bulk = [];
 
                         foreach ($kelasIds as $kelasId) {
@@ -138,6 +139,10 @@ class SiswaResource extends Resource
                                     foreach ($siswas as $siswa) {
 
                                         if (!empty($siswa->no_telepon || $siswa->no_telpon != '081930865458')) {$tabungan = Tabungan::where('siswa_id', $siswa->id)->sum('saldo');
+
+                                            $daftarUlang = DaftarUlang::where('siswa_id', $siswa->id)->whereStatus('0')->where('tahun_ajaran', $tahunAjaran)->sum('biaya');
+
+                                            $daful += $daftarUlang;
 
                                             $iuranSyahriyah = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
@@ -159,23 +164,23 @@ class SiswaResource extends Resource
 
                                             $tunggakanSyahriyah = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
-                                                ->where('tahun_ajaran', '<',$tahunAjaran);
-                                            
+                                                ->where('tahun_ajaran', '<', $tahunAjaran);
+
                                             $tunggakanFieldTrip = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
-                                                ->where('tahun_ajaran', '<' ,$tahunAjaran);
-                                                
+                                                ->where('tahun_ajaran', '<', $tahunAjaran);
+
                                             $tunggakanUangMakan = Iuran::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
-                                                ->where('tahun_ajaran', '<' ,$tahunAjaran);
-                                            
+                                                ->where('tahun_ajaran', '<', $tahunAjaran);
+
                                             $tunggakanIuran = $tunggakanDaftarUlang + $tunggakanSyahriyah + $tunggakanFieldTrip + $tunggakanUangMakan;
 
                                             $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $siswa->id)
                                                 ->where('status', '0')
-                                                ->where('tahun_ajaran', '<' ,$tahunAjaran)
+                                                ->where('tahun_ajaran', '<', $tahunAjaran)
                                                 ->sum('biaya');
-                                            
+
                                             $totalTunggakan = formatRupiah($tunggakanDaftarUlang + $tunggakanIuran);
 
                                             $tabunganRupiah = formatRupiah($tabungan);
@@ -309,6 +314,11 @@ class SiswaResource extends Resource
                         $bulan = $data['bulan'];
                         $tahunAjaran = $data['tahun_ajaran'];
                         $waktu = now();
+                        $daful = 0;
+
+                        $daftarUlang = DaftarUlang::where('siswa_id', $record->id)->whereStatus('0')->where('tahun_ajaran', $tahunAjaran)->sum('biaya');
+
+                        $daful += $daftarUlang;
 
                         $tabungan = Tabungan::where('siswa_id', $record->id)->sum('saldo');
                         $iuranSyahriyah = Iuran::where('siswa_id', $record->id)->where('bulan', $bulan)->whereStatus('0')->sum('syahriyah');
@@ -330,7 +340,7 @@ class SiswaResource extends Resource
                             ->where('tahun_ajaran', '<', $tahunAjaran)
                             ->where('status', '0')
                             ->sum('biaya');
-                            
+
                         $tunggakanRupiah = formatRupiah($tunggakanDaftarUlang + $tunggakanIuranSyahriyah + $tunggakanIuranFieldTrip + $tunggakanIuranUangMakan);
 
                         $kelas = $record->kelas ? $record->kelas->nama : 'Unknown Class';
@@ -366,9 +376,11 @@ class SiswaResource extends Resource
                 • Fieldtrip Tahun $tahunAjaran ($bulan) $iuranFieldTripRupiah
                 • Uang Makan Tahun $tahunAjaran ($bulan) $iuranUangMakanRupiah
                 ----------------------------------
-                Total Tagihan: $totalIuranRupiah
+                Total Tagihan : $totalIuranRupiah
 
-                Tunggakan: $tunggakanRupiah
+                Biaya Daftar Ulang : $daful , $tahun
+
+                Tunggakan : $tunggakanRupiah
 
                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
