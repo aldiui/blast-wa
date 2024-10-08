@@ -229,10 +229,10 @@ class SiswaResource extends Resource
 
                                 Pembayaran Melalui Transfer Bank:
                                 - Bank Syariah Indonesia (BSI)
-                                9199998878 a.n. $sekolah
+                                9199998878 a.n. MI CONDONG
 
                                 - Bank Rakyat Indonesia (BRI)
-                                444401009372539 a.n. $sekolah
+                                444401009372539 a.n. MI CONDONG
 
                                 Harap konfirmasi ke nomor ini setelah melakukan pembayaran.
 
