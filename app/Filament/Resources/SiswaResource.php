@@ -378,7 +378,7 @@ class SiswaResource extends Resource
                 ----------------------------------
                 Total Tagihan : $totalIuranRupiah
 
-                Biaya Daftar Ulang : $daful , $tahun
+                Biaya Daftar Ulang : $daful , $tahunAjaran
 
                 Tunggakan : $tunggakanRupiah
 
