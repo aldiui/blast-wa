@@ -127,7 +127,7 @@ class SiswaResource extends Resource
                         $bulan = $data['bulan'];
                         $tahunAjaran = $data['tahun_ajaran'];
                         $waktu = now();
-                        $daful = 0 ;
+                        $daful = 0;
                         $bulk = [];
 
                         foreach ($kelasIds as $kelasId) {
@@ -346,9 +346,9 @@ class SiswaResource extends Resource
                         $totalIuran = $iuranSyahriyah + $iuranFieldTrip + $iuranUangMakan;
                         $totalIuranRupiah = formatRupiah($totalIuran);
 
-                        $tunggakanIuranSyahriyah = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->where('bulan', $bulan)->whereStatus('0')->sum('syahriyah');
-                        $tunggakanIuranFieldTrip = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->where('bulan', $bulan)->whereStatus('0')->sum('field_trip');
-                        $tunggakanIuranUangMakan = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->where('bulan', $bulan)->whereStatus('0')->sum('uang_makan');
+                        $tunggakanIuranSyahriyah = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->whereStatus('0')->sum('syahriyah');
+                        $tunggakanIuranFieldTrip = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->whereStatus('0')->sum('field_trip');
+                        $tunggakanIuranUangMakan = Iuran::where('siswa_id', $record->id)->where('tahun_ajaran', '<', $tahunAjaran)->whereStatus('0')->sum('uang_makan');
                         $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $record->id)
                             ->where('tahun_ajaran', '<', $tahunAjaran)
                             ->where('status', '0')
@@ -452,7 +452,6 @@ class SiswaResource extends Resource
             IuransRelationManager::class,
         ];
     }
-
 
     public static function getPages(): array
     {
