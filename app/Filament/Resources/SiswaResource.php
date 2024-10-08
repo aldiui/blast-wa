@@ -141,7 +141,7 @@ class SiswaResource extends Resource
                                         if (!empty($siswa->no_telepon || $siswa->no_telpon != '081930865458')) {$tabungan = Tabungan::where('siswa_id', $siswa->id)->sum('saldo');
 
                                             $daftarUlang = DaftarUlang::where('siswa_id', $siswa->id)->whereStatus('0')->where('tahun_ajaran', $tahunAjaran)->sum('biaya');
-                                            
+
                                             $daful = intval($daful) + intval($daftarUlang);
                                             $daful = formatRupiah($daful);
 
@@ -226,6 +226,16 @@ class SiswaResource extends Resource
                                 Biaya Daftar Ulang : $daful
 
                                 Tunggakan: $totalTunggakan
+
+                                Pembayaran Melalui Transfer Bank:
+                                - Bank Syariah Indonesia (BSI)
+                                9199998878 a.n. $sekolah
+
+                                - Bank Rakyat Indonesia (BRI)
+                                444401009372539 a.n. $sekolah
+
+                                Harap konfirmasi ke nomor ini setelah melakukan pembayaran.
+
 
                                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
