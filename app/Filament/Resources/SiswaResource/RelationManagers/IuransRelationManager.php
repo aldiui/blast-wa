@@ -28,6 +28,10 @@ class IuransRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('coba')
+                    ->formatStateUsing(function ($record) {
+                        return formatRupiah($record->syahriyah + $record->uang_makan + $record->field_trip);
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
