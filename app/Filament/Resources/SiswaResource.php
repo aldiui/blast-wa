@@ -236,7 +236,6 @@ class SiswaResource extends Resource
 
                                 Harap konfirmasi ke nomor ini setelah melakukan pembayaran.
 
-
                                 Atas perhatian dan kerjasamanya kami sampaikan terima kasih.
                                 Wassalamu'alaikum Warahmatullahi Wabarakatuh,
 
