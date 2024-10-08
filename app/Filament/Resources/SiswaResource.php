@@ -319,6 +319,7 @@ class SiswaResource extends Resource
                         $daftarUlang = DaftarUlang::where('siswa_id', $record->id)->whereStatus('0')->where('tahun_ajaran', $tahunAjaran)->sum('biaya');
 
                         $daful += $daftarUlang;
+                        $daful = formatRupiah($daful);
 
                         $tabungan = Tabungan::where('siswa_id', $record->id)->sum('saldo');
                         $iuranSyahriyah = Iuran::where('siswa_id', $record->id)->where('bulan', $bulan)->whereStatus('0')->sum('syahriyah');
