@@ -351,7 +351,7 @@ class SiswaResource extends Resource
 
                 Yth Bapak/Ibu Wali Murid,
 
-                Berdasarkan data pada sistem kami hingga 10 Juli 2024 11:45 WIB kami sampaikan data tagihan ananda hingga Bulan Juli 2024:
+                Berdasarkan data pada sistem kami hingga $waktu kami sampaikan data tagihan ananda hingga Bulan $bulan Tahun $tahunAjaran:
 
                 Siswa:
                 NIS      : $nis
