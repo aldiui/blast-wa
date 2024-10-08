@@ -164,23 +164,24 @@ class SiswaResource extends Resource
                                                 ->sum('uang_makan');
 
                                             $tunggakanSyahriyah = Iuran::where('siswa_id', $siswa->id)
-                                                ->whereMonth('created_at', '<', $bulan)
+                                                ->whereNot('bulan', $bulan)
                                                 ->where('status', '0')
                                                 ->sum('syahriyah');
 
                                             $tunggakanFieldTrip = Iuran::where('siswa_id', $siswa->id)
-                                                ->whereMonth('created_at', '<', $bulan)
+                                                ->whereNot('bulan', $bulan)
                                                 ->where('status', '0')
                                                 ->sum('field_trip');
 
                                             $tunggakanUangMakan = Iuran::where('siswa_id', $siswa->id)
-                                                ->whereMonth('created_at', '<', $bulan)
+                                                ->whereNot('bulan', $bulan)
                                                 ->where('status', '0')
                                                 ->sum('uang_makan');
 
                                             $tunggakanIuran = $tunggakanSyahriyah + $tunggakanFieldTrip + $tunggakanUangMakan;
 
-                                            $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $siswa->id)
+                                            $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $record->id)
+                                                ->whereNot('tahun_ajaran', $tahunAjaran)
                                                 ->where('status', '0')
                                                 ->sum('biaya');
 
@@ -348,10 +349,11 @@ class SiswaResource extends Resource
                         $totalIuran = $iuranSyahriyah + $iuranFieldTrip + $iuranUangMakan;
                         $totalIuranRupiah = formatRupiah($totalIuran);
 
-                        $tunggakanIuranSyahriyah = Iuran::where('siswa_id', $record->id)->whereMonth('created_at', '<', $bulan)->whereStatus('0')->sum('syahriyah');
-                        $tunggakanIuranFieldTrip = Iuran::where('siswa_id', $record->id)->whereMonth('created_at', '<', $bulan)->whereStatus('0')->sum('field_trip');
-                        $tunggakanIuranUangMakan = Iuran::where('siswa_id', $record->id)->whereMonth('created_at', '<', $bulan)->whereStatus('0')->sum('uang_makan');
+                        $tunggakanIuranSyahriyah = Iuran::where('siswa_id', $record->id)->whereNot('bulan', $bulan)->whereStatus('0')->sum('syahriyah');
+                        $tunggakanIuranFieldTrip = Iuran::where('siswa_id', $record->id)->whereNot('bulan', $bulan)->whereStatus('0')->sum('field_trip');
+                        $tunggakanIuranUangMakan = Iuran::where('siswa_id', $record->id)->whereNot('bulan', $bulan)->whereStatus('0')->sum('uang_makan');
                         $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $record->id)
+                            ->whereNot('tahun_ajaran', $tahunAjaran)
                             ->where('status', '0')
                             ->sum('biaya');
 
