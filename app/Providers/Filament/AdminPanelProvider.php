@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('/')
             ->login()
             ->spa()
+            ->darkMode(false)
             ->profile()
             ->globalSearch()
             ->sidebarWidth('13rem')

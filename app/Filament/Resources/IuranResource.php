@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\IuranResource\Pages;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Iuran;
 use App\Models\Kelas;
 use App\Models\Siswa;
-use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Enums\FiltersLayout;
+use App\Filament\Resources\IuranResource\Pages;
 
 class IuranResource extends Resource
 {
@@ -125,6 +126,19 @@ class IuranResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('uuid')
+                    ->formatStateUsing(function ($state) {
+                        $record = Iuran::where('uuid', $state)->first();
+                        $syahriyah = $record->syahriyah ?? 0;
+                        $uangMakan = $record->uang_makan ?? 0;
+                        $fieldTrip = $record->field_trip ?? 0;
+
+                        $total = $syahriyah + $uangMakan + $fieldTrip;
+                        return formatRupiah($total);
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->label('Total'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -152,8 +166,14 @@ class IuranResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        '0' => 'Belum Lunas',
+                        '1' => 'Lunas',
+                    ])
+                    ->searchable(),
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->icon('heroicon-o-pencil'),

@@ -14,6 +14,8 @@ class TabungansRelationManager extends RelationManager
 {
     protected static string $relationship = 'tabungans';
 
+    protected static ?string $title = 'Tabungan';
+
     public function table(Table $table): Table
     {
         return $table

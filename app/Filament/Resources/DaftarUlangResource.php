@@ -98,7 +98,7 @@ class DaftarUlangResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('biaya')
                     ->numeric()
-                    ->sortable(),
+                    ->formatStateUsing(fn(string $state) => formatRupiah($state)),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()

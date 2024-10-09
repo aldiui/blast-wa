@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources\SiswaResource\RelationManagers;
 
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class DaftarUlangsRelationManager extends RelationManager
 {
     protected static string $relationship = 'daftarUlangs';
+
+    protected static ?string $title = 'Daftar Ulang';
 
     public function table(Table $table): Table
     {
@@ -46,6 +49,15 @@ class DaftarUlangsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('keterangan')
                     ->searchable(),
             ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        '0' => 'Belum Lunas',
+                        '1' => 'Lunas',
+                    ])
+                    ->searchable(),
+            ], layout: FiltersLayout::AboveContent)
             ->recordUrl(
                 fn($record): string => '/daftar-ulang/' . $record->uuid . '/edit',
             )
