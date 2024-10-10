@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SiswaResource extends Resource
@@ -35,6 +36,13 @@ class SiswaResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['kelas']);
+    }
+
+    protected static ?string $recordTitleAttribute = 'nama';
+
     public static function getGloballySearchableAttributes(): array
     {
         return ['nama', 'nis'];
@@ -43,8 +51,8 @@ class SiswaResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Nama' => $record->nama,
             'Nis' => $record->nis,
+            'Kelas' => $record->kelas ? $record->kelas->nama : 'N/A',
         ];
     }
     public static function form(Form $form): Form
