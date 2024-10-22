@@ -56,7 +56,8 @@ class DaftarUlangResource extends Resource
                         )
                         ->default(cekTahunAjaran()['tahunAjaranSekarang']),
                     Forms\Components\DatePicker::make('tanggal')
-                        ->required(),
+                        ->required()
+                        ->default(now()),
                     Forms\Components\TextInput::make('biaya')
                         ->required()
                         ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)

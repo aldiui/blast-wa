@@ -39,7 +39,8 @@ class PengumumanResource extends Resource
                         ->required()
                         ->maxLength(255),
                     Forms\Components\DateTimePicker::make('tanggal')
-                        ->required(),
+                        ->required()
+                        ->default(now()),
                     Forms\Components\Textarea::make('deksripsi')
                         ->required()
                         ->columnSpanFull(),

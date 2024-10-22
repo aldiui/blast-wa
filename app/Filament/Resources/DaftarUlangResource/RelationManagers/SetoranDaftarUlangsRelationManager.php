@@ -32,7 +32,8 @@ class SetoranDaftarUlangsRelationManager extends RelationManager
                     ->default('0')
                     ->required(),
                 Forms\Components\DateTimePicker::make('tanggal')
-                    ->required(),
+                    ->required()
+                    ->default(now()),
             ]);
     }
 
