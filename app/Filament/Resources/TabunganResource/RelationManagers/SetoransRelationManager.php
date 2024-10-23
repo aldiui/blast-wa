@@ -23,7 +23,7 @@ class SetoransRelationManager extends RelationManager
                     ->required()
                     ->currencyMask(thousandSeparator: '.', decimalSeparator: ',', precision: 2)
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('tanggal')
+                Forms\Components\DatePicker::make('tanggal')
                     ->default(now())
                     ->required(),
                 Forms\Components\Select::make('pembayaran')
