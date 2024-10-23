@@ -28,7 +28,7 @@ class EditTabungan extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('edit', ['record' => $this->record->getKey()]);
+        return $this->getResource()::getUrl('edit', ['record' => $this->record->uuid]);
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
