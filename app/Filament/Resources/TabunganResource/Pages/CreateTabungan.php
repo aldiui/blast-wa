@@ -41,8 +41,10 @@ class CreateTabungan extends CreateRecord
 
         if ($tabungan && $data['saldo'] > 0) {
             $tabungan->setorans()->create([
+                'tanggal' => date('Y-m-d'),
                 'transaksi' => 'Pemasukan',
                 'nominal' => $data['saldo'],
+                'pembayaran' => 'Cash',
             ]);
         }
 
