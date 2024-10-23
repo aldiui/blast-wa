@@ -44,6 +44,7 @@ class CreateTabungan extends CreateRecord
                 'tanggal' => date('Y-m-d'),
                 'transaksi' => 'Pemasukan',
                 'nominal' => $data['saldo'],
+                'pembayaran' => 'Cash',
             ]);
         }
 
