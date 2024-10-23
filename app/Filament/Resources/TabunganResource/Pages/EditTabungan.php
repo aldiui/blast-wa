@@ -59,13 +59,17 @@ class EditTabungan extends EditRecord
         if ($data['saldo'] !== $saldoLama) {
             if ($data['saldo'] > $saldoLama) {
                 $record->setorans()->create([
+                    'tanggal' => date('Y-m-d'),
                     'transaksi' => 'Pemasukan',
                     'nominal' => $data['saldo'] - $saldoLama,
+                    'pembayaran' => 'Cash',
                 ]);
             } elseif ($data['saldo'] < $saldoLama) {
                 $record->setorans()->create([
+                    'tanggal' => date('Y-m-d'),
                     'transaksi' => 'Pengeluaran',
                     'nominal' => $saldoLama - $data['saldo'],
+                    'pembayaran' => 'Cash',
                 ]);
             }
         }
