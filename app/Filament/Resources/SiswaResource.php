@@ -188,7 +188,7 @@ class SiswaResource extends Resource
 
                                             $tunggakanIuran = $tunggakanSyahriyah + $tunggakanFieldTrip + $tunggakanUangMakan;
 
-                                            $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $record->id)
+                                            $tunggakanDaftarUlang = DaftarUlang::where('siswa_id', $siswa->id)
                                                 ->whereNot('tahun_ajaran', $tahunAjaran)
                                                 ->where('status', '0')
                                                 ->sum('biaya');
